@@ -2,7 +2,6 @@ package com.example.tikhoretsk_lawyers_bureau_1.boards;
 
 import com.example.tikhoretsk_lawyers_bureau_1.TextsR;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -29,17 +28,19 @@ public class Boards {
 
         List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
 
-        InlineKeyboardButton button = buttonGreat("НАШ АДРЕС", "sait");
-        button.setUrl("https://www.google.com/maps/place/%D1%83%D0%BB.+%D0%AD%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%B0,+174,+%D0%A2%D0%B8%D1%85%D0%BE%D1%80%D0%B5%D1%86%D0%BA,+%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9+%D0%BA%D1%80%D0%B0%D0%B9,+352120/@45.8573395,40.1215312,19z/data=!4m6!3m5!1s0x40fb1fbb77b46029:0x8dfa863ee15c0b2b!8m2!3d45.857787!4d40.122075!16s%2Fg%2F11dfj0wtwq?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D");
-        InlineKeyboardButton button1 = buttonGreat("НАШИ АДВОКАТЫ", "LR");
+
+        InlineKeyboardButton button =buttonGreat("Адвокатская палата Краснодарского края", "saitSait");
+        button.setUrl("https://apkk.ru/");
+        InlineKeyboardButton button1 = buttonGreat("НАШ АДРЕС", "sait");
+        button1.setUrl("https://www.google.com/maps/place/%D1%83%D0%BB.+%D0%AD%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%B0,+174,+%D0%A2%D0%B8%D1%85%D0%BE%D1%80%D0%B5%D1%86%D0%BA,+%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9+%D0%BA%D1%80%D0%B0%D0%B9,+352120/@45.8573395,40.1215312,19z/data=!4m6!3m5!1s0x40fb1fbb77b46029:0x8dfa863ee15c0b2b!8m2!3d45.857787!4d40.122075!16s%2Fg%2F11dfj0wtwq?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D");
+
 
         rowInline1.add(button);
         rowInline1.add(button1);
 
         List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-        InlineKeyboardButton button2 =buttonGreat("Адвокатская палата Краснодарского края", "saitSait");
-        button2.setUrl("https://apkk.ru/");
 
+        InlineKeyboardButton button2 = buttonGreat("НАШИ АДВОКАТЫ", "LR");
         InlineKeyboardButton button3 = buttonGreat("Образцы заявлений", "idea");
 
         rowInline2.add(button2);
@@ -115,6 +116,7 @@ public class Boards {
     }
 
     public  SendMessage paragraphs(long chat_id) {
+        appUserRepository.save(chat_id);
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         InlineKeyboardButton button1 = buttonGreat("'А'", "А");

@@ -1,5 +1,7 @@
 package com.example.tikhoretsk_lawyers_bureau_1;
 
+import java.time.LocalDate;
+
 public class TextsR {
     public static final String history = "Здесь могла быть наша история но ее некому написать";
     public static final String start = """
@@ -27,7 +29,31 @@ public class TextsR {
 
 
 
-    public final static String dateText="Введите дату  в формате /date  ДДММГГ \n" +
-            "например 1 февраля  2024 это –\n" +
-            "/date  010224   \n";
+
+    public final static LocalDate[] holidays = {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 2), LocalDate.of(2024, 1, 3)
+            , LocalDate.of(2024, 1, 4), LocalDate.of(2024, 1, 5), LocalDate.of(2024, 1, 6), LocalDate.of(2024, 1, 8)
+            , LocalDate.of(2024, 2, 23), LocalDate.of(2024, 3, 8), LocalDate.of(2024, 4, 29), LocalDate.of(2024, 1, 30)
+            , LocalDate.of(2024, 5, 1), LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10), LocalDate.of(2024, 6, 12)
+            , LocalDate.of(2024, 11, 4), LocalDate.of(2024, 12, 29), LocalDate.of(2024, 12, 30),
+
+
+            LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 2), LocalDate.of(2025, 1, 3), LocalDate.of(2025, 1, 4)
+            , LocalDate.of(2024, 1, 5), LocalDate.of(2025, 1, 6), LocalDate.of(2025, 1, 7), LocalDate.of(2025, 1, 8)
+            , LocalDate.of(2025, 2, 23), LocalDate.of(2025, 3, 8), LocalDate.of(2025, 4, 29), LocalDate.of(2025, 1, 30)
+            , LocalDate.of(2025, 5, 1), LocalDate.of(2025, 5, 9), LocalDate.of(2025, 5, 10), LocalDate.of(2025, 6, 12)
+            , LocalDate.of(2025, 11, 4), LocalDate.of(2025, 12, 29), LocalDate.of(2025, 12, 30)
+
+
+    };
+
+
+
+    public final static String calendar="Январь" + System.lineSeparator() +
+            "/date_01_01_24  /date_02_01_24" + System.lineSeparator() + "/date_03_01_24  /date_04_01_24"+ System.lineSeparator() +  "/date_05_01_24 /date_06_01_24"+ System.lineSeparator() + "/date_07_01_24 /date_08_01_24" + System.lineSeparator() +
+            "/date_09_01_24  /date_10_01_24" + System.lineSeparator() + "/date_11_01_24  /date_12_01_24"+ System.lineSeparator() +"/date_13_01_24 /date_14_01_24" + System.lineSeparator() +
+            "/date_15_01_24  /date_16_01_24"+ System.lineSeparator() +"/date_17_01_24  /date_18_01_24"+ System.lineSeparator() +" /date_19_01_24 /date_20_01_24"+ System.lineSeparator() +
+            "/date_21_01_24 /date_22_01_24"+ System.lineSeparator() + "/date_23_01_24 /date_24_01_24" + System.lineSeparator() + "/date_25_01_24 /date_26_01_24"+ System.lineSeparator() + "/date_27_01_24 /date_28_01_24"
+            + System.lineSeparator() +"/date_29_01_24 /date_30_01_24  /date_31_01_24";
+
+
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import java.util.List;
@@ -23,8 +24,10 @@ public class Calculation {
 
 
     public String result(long chat_id) {
+        if (appUserRepository.findByIdAppUser(chat_id).orElseThrow().getParagraph()==null)
+        {return "";}
         Long id= Long.valueOf(chat_id);
-        AppUser appUser = appUserRepository.findByIdAppUser(id).get();
+        AppUser appUser = appUserRepository.findByIdAppUser(id).orElseThrow();
         return alla(appUser.getParagraph(), appUser) +
                 System.lineSeparator() + "Количество дней " + appUser.getPaymentDayList().size()
                 + System.lineSeparator() + "Итого к выплате подлежит сумма  - " + total+ " руб., которую прошу перечислить на банковские реквизиты:";
@@ -56,10 +59,10 @@ public class Calculation {
             String dayER = formatter.format(payment.getDatePay());
             String sd = formatter2.format(payment.getDatePay().getDayOfWeek());
             if (payment.getDatePay().isBefore(date1Oct)) {
-                if (sd.contains("суббота") || sd.contains("воскресенье")) {
+                if (valid(sd,payment)) {
                     pay = dayOff24;
                 } else pay = day24;
-            } else if (sd.contains("суббота") || sd.contains("воскресенье")) {
+            } else if (valid(sd,payment)) {
                 pay = dayOff25;
             } else pay = day25;
             total = total + pay;
@@ -68,6 +71,8 @@ public class Calculation {
 
         return all;
     }
-
+    private boolean valid(String sd,PaymentDay payment){
+        return sd.contains("суббота") || sd.contains("воскресенье")|| Arrays.stream(TextsR.holidays).anyMatch(day->payment.getDatePay().isEqual(day));
+    }
 
 }

@@ -24,7 +24,7 @@ public class DateCommand implements IBotCommand {
 
     @Override
     public String getCommandIdentifier() {
-        return "date";
+        return "asd";
     }
 
     @Override

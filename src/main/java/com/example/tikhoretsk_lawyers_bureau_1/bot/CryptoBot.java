@@ -2,6 +2,7 @@ package com.example.tikhoretsk_lawyers_bureau_1.bot;
 
 import com.example.tikhoretsk_lawyers_bureau_1.TextsR;
 import com.example.tikhoretsk_lawyers_bureau_1.boards.Boards;
+import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
 import com.example.tikhoretsk_lawyers_bureau_1.pay.Calculation;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,14 +48,23 @@ public class CryptoBot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
-
-
         if ((update.hasMessage() && update.getMessage().hasText())) {
-
+            long id = update.getMessage().getChatId();
             String message_text = update.getMessage().getText();
-            if (!(Objects.equals(message_text, "/start")||message_text.startsWith("/date")))
-                sendMessage(update.getMessage().getChatId(), "У меня сегодня нет настроения общаться на  сторонние  темы.  Нажмите /start ");
+            if (!(Objects.equals(message_text, "/start") || message_text.startsWith("/date_")))
+                sendMessage(id, "У меня сегодня нет настроения общаться на  сторонние  темы.  Нажмите /start ");
+            else if (message_text.startsWith("/date_")) {
+                qwe(update.getMessage(), id);
+                try {
+                    execute(boards.nextFinish(id));
+                } catch (TelegramApiException e) {
+                    log.error("Ошибка отправки сообщения", e);
+                }
+
+            }
+
         }
+
 
         if (!(update.hasMessage() && update.getMessage().hasText())) {
             String call_data = update.getCallbackQuery().getData();
@@ -63,7 +75,7 @@ public class CryptoBot extends TelegramLongPollingCommandBot {
                 switch (call_data) {
                     case "idea" -> sendMessage(chat_id, TextsR.help);
 
-                    case "hist"-> sendMessage(chat_id, TextsR.history);
+                    case "hist" -> sendMessage(chat_id, TextsR.history);
 
                     case "LR" -> execute(boards.defenders(chat_id));
 
@@ -84,13 +96,13 @@ public class CryptoBot extends TelegramLongPollingCommandBot {
                     case "кат" -> sendMessage(chat_id, "Писал этого бота две недели на Java.");
 
                     case "Размер оплаты труда" -> execute(boards.paragraphs(chat_id));
-                    case "А" -> sendMessage(chat_id, TextsR.dateText,"а");
-                    case "Б" -> sendMessage(chat_id, TextsR.dateText,"б");
-                    case "В" -> sendMessage(chat_id, TextsR.dateText,"в");
-                    case "Г" -> sendMessage(chat_id, TextsR.dateText,"г");
+                    case "А" -> sendMessage(chat_id, TextsR.calendar, "а");
+                    case "Б" -> sendMessage(chat_id, TextsR.calendar, "б");
+                    case "В" -> sendMessage(chat_id, TextsR.calendar, "в");
+                    case "Г" -> sendMessage(chat_id, TextsR.calendar, "г");
 
-                    case "но" -> sendMessage(chat_id, TextsR.dateText);
-                    case "законч" -> sendMessage(chat_id,calculation.result(chat_id));
+                    case "но" -> sendMessage(chat_id, TextsR.calendar);
+                    case "законч" -> sendMessageParagraph(chat_id, calculation.result(chat_id));
 
 
                 }
@@ -111,15 +123,44 @@ public class CryptoBot extends TelegramLongPollingCommandBot {
             log.error("Ошибка отправки сообщения", e);
         }
     }
-    private void sendMessage(Long chatId, String text,String paragraph) {
-        appUserRepository.setParagraph(chatId,paragraph);
+
+    private void sendMessage(Long chatId, String text1, String paragraph) {
+        appUserRepository.save(chatId);
+        appUserRepository.setParagraph(chatId, paragraph);
         var chatIdStr = String.valueOf(chatId);
-        var sendMessage = new SendMessage(chatIdStr, text);
+        var sendMessage = new SendMessage(chatIdStr, text1);
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             log.error("Ошибка отправки сообщения", e);
         }
     }
+
+    public void qwe(Message message, Long chatId) {
+        appUserRepository.save(chatId);
+        String date = message.getText().replaceAll("[^0-9]", "");
+        System.out.println(date);
+        String[] arrayDate = date.split("");
+        String yearSt = "20" + arrayDate[4] + arrayDate[5];
+        int year = Integer.parseInt(yearSt);
+        String monthSt = arrayDate[2] + arrayDate[3];
+        int month = Integer.parseInt(monthSt);
+        String daySt = arrayDate[0] + arrayDate[1];
+        int day = Integer.parseInt(daySt);
+        PaymentDay payment = new PaymentDay(LocalDate.of(year, month, day));
+        appUserRepository.setDay(message.getChatId(), payment);
+    }
+
+    private void sendMessageParagraph(Long chatId, String text) throws TelegramApiException {
+        var chatIdStr = String.valueOf(chatId);
+        var sendMessage = new SendMessage(chatIdStr, text);
+        System.out.println(appUserRepository.findByIdAppUser(chatId).orElseThrow().getParagraph());
+        if (appUserRepository.findByIdAppUser(chatId).orElseThrow().getParagraph() == null) {
+            execute(boards.paragraphs(chatId));
+        } else
+            execute(sendMessage);
+
+    }
+
 
 }

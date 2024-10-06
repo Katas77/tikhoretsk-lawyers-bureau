@@ -33,7 +33,7 @@ public class AppUserRepository {
 
     public void save(Long chatId) {
         AppUser appUser = AppUser.builder().chatId(chatId).build();
-        if (!this.findByIdAppUser(chatId).isPresent()) {
+        if (this.findByIdAppUser(chatId).isEmpty()) {
             appUsers.put(chatId, appUser);
             System.out.println(appUser.getChatId());
             System.out.println(appUsers.size());
@@ -47,7 +47,7 @@ public class AppUserRepository {
     public void setDay(Long chatId,PaymentDay paymentDay) {
 
         List<PaymentDay> paymentDays=new ArrayList<>();
-        AppUser appUser= this.findByIdAppUser(chatId).get();
+        AppUser appUser= this.findByIdAppUser(chatId).orElseThrow();
         if (appUser.getPaymentDayList()==null){
          appUser.setPaymentDayList(paymentDays);}
         else {paymentDays=appUser.getPaymentDayList();}
@@ -60,15 +60,14 @@ public class AppUserRepository {
 
 
     public void setParagraph(Long chatId,String paragraph) {
-
-        AppUser appUser= this.findByIdAppUser(chatId).get();
+        AppUser appUser= this.findByIdAppUser(chatId).orElseThrow();
       appUser.setParagraph(paragraph);
         appUsers.put(chatId,appUser);
 
     }
 
     public void newtDays(Long chatId) {
-        AppUser appUser= this.findByIdAppUser(chatId).get();
+        AppUser appUser= this.findByIdAppUser(chatId).orElseThrow();
         List<PaymentDay> paymentDays=new ArrayList<>();
         appUser.setPaymentDayList(paymentDays);
         appUsers.put(chatId,appUser);
