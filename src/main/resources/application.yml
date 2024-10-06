@@ -1,0 +1,18 @@
+
+telegram:
+  bot:
+    username: Tikhoretsk_lawyers_bureau_1_bot
+    token: 8100533704:AAHjy7lEuVJbloLq1-nsJQT9q-_PYPeLVZI
+
+    #    не вписывайте данные, так как можете отправить в публичный репозиторий
+#    используйте переменные среды для установки значений
+
+    notify:
+      delay:
+        value: 10
+        unit: MINUTES
+
+binance:
+  api:
+    getPrice: https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT
+
