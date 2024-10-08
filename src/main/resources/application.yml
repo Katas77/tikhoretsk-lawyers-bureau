@@ -1,4 +1,6 @@
 
+
+
 telegram:
   bot:
     username: Tikhoretsk_lawyers_bureau_1_bot
@@ -16,8 +18,3 @@ binance:
   api:
     getPrice: https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT
 
-#logging:
- # level:
-   # root: info
-  #file:
-    #name: "data/debug.log"

@@ -30,7 +30,7 @@ public class UserAppService {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(() -> {
             System.out.println("The worker");
-        }, 0, 2, TimeUnit.MINUTES);
+        }, 0, 2, TimeUnit.HOURS);
     }
 
 

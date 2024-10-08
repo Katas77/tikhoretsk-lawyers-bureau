@@ -1,6 +1,6 @@
 package com.example.tikhoretsk_lawyers_bureau_1.configuration;
 
-import com.example.tikhoretsk_lawyers_bureau_1.bot.CryptoBot;
+import com.example.tikhoretsk_lawyers_bureau_1.bot.LawyersBureauBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @Slf4j
 public class TelegramBotConfiguration {
     @Bean
-    TelegramBotsApi telegramBotsApi(CryptoBot cryptoBot) {
+    TelegramBotsApi telegramBotsApi(LawyersBureauBot cryptoBot) {
         TelegramBotsApi botsApi = null;
         try {
             botsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -23,7 +23,6 @@ public class TelegramBotConfiguration {
         }
         return botsApi;
     }
-
 
 
 

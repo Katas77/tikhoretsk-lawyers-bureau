@@ -1,9 +1,0 @@
-
-2024-10-06T09:24:48.384+03:00  WARN 12004 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T09:26:01.790+03:00  WARN 1576 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T09:26:37.137+03:00  WARN 1576 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T09:40:29.478+03:00  WARN 7728 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T10:28:16.842+03:00  WARN 9008 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T10:44:54.161+03:00  WARN 8892 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T11:59:54.466+03:00  WARN 2204 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 
-2024-10-06T12:29:51.311+03:00  WARN 12280 --- [Tikhoretsk_lawyers_bureau_1_bot Telegram Executor] c.e.t.bot.command.StartCommand           : ChatId  406517766,  UserName  Karnataki, FirstName  Romakat77, LastName  Katas77 

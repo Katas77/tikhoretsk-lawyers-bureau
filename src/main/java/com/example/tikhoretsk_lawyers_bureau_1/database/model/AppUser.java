@@ -15,5 +15,4 @@ public class AppUser {
     private String paragraph;
     private Long chatId;
     private List <PaymentDay> paymentDayList;
-
 }

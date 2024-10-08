@@ -1,6 +1,6 @@
 package com.example.tikhoretsk_lawyers_bureau_1.pay;
 
-import com.example.tikhoretsk_lawyers_bureau_1.TextsR;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
@@ -20,30 +20,34 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class Calculation {
     private final AppUserRepository appUserRepository;
-    private  int total;
-
+    private int total;
 
     public String result(long chat_id) {
-        if (appUserRepository.findByIdAppUser(chat_id).orElseThrow().getParagraph()==null)
-        {return "";}
-        Long id= Long.valueOf(chat_id);
+        if (appUserRepository.findByIdAppUser(chat_id).isEmpty() || appUserRepository.findByIdAppUser(chat_id).get().getParagraph() == null) {
+            return "/start";
+        }
+        Long id = Long.valueOf(chat_id);
         AppUser appUser = appUserRepository.findByIdAppUser(id).orElseThrow();
         return alla(appUser.getParagraph(), appUser) +
                 System.lineSeparator() + "Количество дней " + appUser.getPaymentDayList().size()
-                + System.lineSeparator() + "Итого к выплате подлежит сумма  - " + total+ " руб., которую прошу перечислить на банковские реквизиты:";
+                + System.lineSeparator() + "Итого к выплате подлежит сумма  - " + total + " руб., которую прошу перечислить на банковские реквизиты:"
+                + System.lineSeparator() + System.lineSeparator() + "/start";
     }
 
 
     String alla(String paragraph, AppUser appUser) {
-        if (paragraph.startsWith("а"))
-            return wer(TextsR.day2024[0], TextsR.dayOff2024[0], TextsR.day2025[0], TextsR.dayOff2025[0], appUser);
-        if (paragraph.startsWith("б"))
-            return wer(TextsR.day2024[1], TextsR.dayOff2024[1], TextsR.day2025[1], TextsR.dayOff2025[1], appUser);
-        if (paragraph.startsWith("в"))
-            return wer(TextsR.day2024[2], TextsR.dayOff2024[2], TextsR.day2025[2], TextsR.dayOff2025[2], appUser);
-        if (paragraph.startsWith("г"))
-            return wer(TextsR.day2024[3], TextsR.dayOff2024[3], TextsR.day2025[3], TextsR.dayOff2025[3], appUser);
-        else return null;
+        if (paragraph.startsWith("a")) {
+            return wer(MessageAndDays.day2024[0], MessageAndDays.dayOff2024[0], MessageAndDays.day2025[0], MessageAndDays.dayOff2025[0], appUser);
+        }
+        if (paragraph.startsWith("b")) {
+            return wer(MessageAndDays.day2024[1], MessageAndDays.dayOff2024[1], MessageAndDays.day2025[1], MessageAndDays.dayOff2025[1], appUser);
+        }
+        if (paragraph.startsWith("v")) {
+            return wer(MessageAndDays.day2024[2], MessageAndDays.dayOff2024[2], MessageAndDays.day2025[2], MessageAndDays.dayOff2025[2], appUser);
+        }
+        if (paragraph.startsWith("g")) {
+            return wer(MessageAndDays.day2024[3], MessageAndDays.dayOff2024[3], MessageAndDays.day2025[3], MessageAndDays.dayOff2025[3], appUser);
+        } else return null;
     }
 
     public String wer(int day24, int dayOff24, int day25, int dayOff25, AppUser appUser) {
@@ -59,10 +63,10 @@ public class Calculation {
             String dayER = formatter.format(payment.getDatePay());
             String sd = formatter2.format(payment.getDatePay().getDayOfWeek());
             if (payment.getDatePay().isBefore(date1Oct)) {
-                if (valid(sd,payment)) {
+                if (valid(sd, payment)) {
                     pay = dayOff24;
                 } else pay = day24;
-            } else if (valid(sd,payment)) {
+            } else if (valid(sd, payment)) {
                 pay = dayOff25;
             } else pay = day25;
             total = total + pay;
@@ -71,8 +75,9 @@ public class Calculation {
 
         return all;
     }
-    private boolean valid(String sd,PaymentDay payment){
-        return sd.contains("суббота") || sd.contains("воскресенье")|| Arrays.stream(TextsR.holidays).anyMatch(day->payment.getDatePay().isEqual(day));
+
+    private boolean valid(String sd, PaymentDay payment) {
+        return sd.contains("суббота") || sd.contains("воскресенье") || Arrays.stream(MessageAndDays.holidays).anyMatch(day -> payment.getDatePay().isEqual(day));
     }
 
 }

@@ -9,12 +9,12 @@ COPY build/libs/tikhoretsk-lawyers-bureau-1-0.0.1-SNAPSHOT.jar app.jar
 
 #Команда docker build создает образы Docker из файла Dockerfile: docker build -t telegram_bot2 .
 # Команда docker run Создает и запускает контейнер на основе заданного образа.: docker run telegram_bot2
-# docker run -it student-registration
+# docker run -it telegram_bot2
 CMD ["java", "-jar", "app.jar"]
 
 
-#( в терминалеPS C:\Users\krp77\IdeaProjects\socketserver>  docker build -t telegram_bot .)
-#(PS C:\Users\krp77\IdeaProjects\socketserver>  docker run telegram_bot  )
+#( в терминалеPS C:\Users\krp77\IdeaProjects\socketserver>  docker build -t telegram_bot2 .)
+#(PS C:\Users\krp77\IdeaProjects\socketserver>  docker run telegram_bot2  )
 
 # docker container ls
 # docker container ls -a

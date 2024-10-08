@@ -1,9 +1,9 @@
-package com.example.tikhoretsk_lawyers_bureau_1;
+package com.example.tikhoretsk_lawyers_bureau_1.utils;
 
 import java.time.LocalDate;
 
-public class TextsR {
-    public static final String history = "Здесь могла быть наша история но ее некому написать";
+public class MessageAndDays {
+    public static final String history = "Наш филиал, из непрерывной действующих, старейший в краснодарском крае, однако история ещё не написана Прасковья Георгиевна  и Игорь Анатольевич исправляют ситуацию!!!.";
     public static final String start = """
             Привет! Данный бот помогает отслеживать стоимость биткоина.
             Поддерживаемые команды:
@@ -22,12 +22,10 @@ public class TextsR {
             "уже не в силах исправить сложившуюся ситуацию.";
 
 
-    public final static int[] day2024 = {2359, 2118, 1882, 1646};
+    public final static int[] day2024    = {2359, 2118, 1882, 1646};
+    public final static int[] day2025    = {2479, 2226, 1978, 1730};
     public final static int[] dayOff2024 = {3676, 3193, 2722, 2249};
-    public final static int[] day2025 = {2479, 2226, 1978, 1730};
     public final static int[] dayOff2025 = {3863, 3356, 2861, 2364};
-
-
 
 
     public final static LocalDate[] holidays = {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 2), LocalDate.of(2024, 1, 3)
@@ -45,15 +43,16 @@ public class TextsR {
 
 
     };
+    public static final String[] messageTe={"Народ! Кузькина мать зовёт! Никак вы нам не рады? А придётся!","Однажды в правильном месте наступает нужный час…\n" +
+            "\n" +
+            "Готовы ли вы ко всему?"};
+
+    public  static  final  Long[] chat_id={434737035L, 846878161L, 406517766L, 803901509L, 1383650677L, 1052145142L, 5328965521L};
 
 
 
-    public final static String calendar="Январь" + System.lineSeparator() +
-            "/date_01_01_24  /date_02_01_24" + System.lineSeparator() + "/date_03_01_24  /date_04_01_24"+ System.lineSeparator() +  "/date_05_01_24 /date_06_01_24"+ System.lineSeparator() + "/date_07_01_24 /date_08_01_24" + System.lineSeparator() +
-            "/date_09_01_24  /date_10_01_24" + System.lineSeparator() + "/date_11_01_24  /date_12_01_24"+ System.lineSeparator() +"/date_13_01_24 /date_14_01_24" + System.lineSeparator() +
-            "/date_15_01_24  /date_16_01_24"+ System.lineSeparator() +"/date_17_01_24  /date_18_01_24"+ System.lineSeparator() +" /date_19_01_24 /date_20_01_24"+ System.lineSeparator() +
-            "/date_21_01_24 /date_22_01_24"+ System.lineSeparator() + "/date_23_01_24 /date_24_01_24" + System.lineSeparator() + "/date_25_01_24 /date_26_01_24"+ System.lineSeparator() + "/date_27_01_24 /date_28_01_24"
-            + System.lineSeparator() +"/date_29_01_24 /date_30_01_24  /date_31_01_24";
 
 
 }
+
+

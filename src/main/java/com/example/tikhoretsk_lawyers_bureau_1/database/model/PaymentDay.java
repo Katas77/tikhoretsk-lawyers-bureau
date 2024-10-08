@@ -13,10 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentDay {
-
     LocalDate datePay;
-
-
-
 
 }
