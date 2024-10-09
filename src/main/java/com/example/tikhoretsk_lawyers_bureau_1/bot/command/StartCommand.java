@@ -38,7 +38,7 @@ public class StartCommand implements IBotCommand {
         var text = "ChatId  %s,  UserName  %s, FirstName  %s, LastName  %s ";
         String formattedText = String.format(text, message.getChatId(), message.getChat().getUserName(), message.getChat().getFirstName(), message.getChat().getLastName());
         log.info(formattedText);
-        read(formattedText);
+
         try {
             absSender.execute(boards.startKeyboardAb(message.getChatId()));
         } catch (TelegramApiException e) {
@@ -46,26 +46,7 @@ public class StartCommand implements IBotCommand {
         }
     }
 
-    public void read(String text) {
-        StringBuilder allaB = new StringBuilder();
-        List<String> allaL = new ArrayList<>();
-        try {
-            allaL = Files.readAllLines(Paths.get("data/roma.txt"));
-            allaL.forEach(al -> {
-                allaB.append(al + "\n");
-            });
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-        List<String> allaL2 = allaL;
-        allaL2.add(text);
-        try {
-            Files.write(Paths.get("data/roma.txt"), allaL2);
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
 
-    }
 
 }
 
