@@ -2,12 +2,12 @@ package com.example.tikhoretsk_lawyers_bureau_1.database.repository;
 
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class AppUserRepository {
     private final ConcurrentHashMap<Long, AppUser> appUsers = new ConcurrentHashMap<>();
+    public List<AppUser> findAll(){return (List<AppUser>) appUsers.values();}
 
 
     public Optional<AppUser> findByIdAppUser(Long id) {
@@ -69,5 +70,17 @@ public class AppUserRepository {
         appUser.setParagraph(null);
         appUsers.put(chatId, appUser);
     }
+    @PostConstruct
+    public void bureau(){
+        Arrays.stream(MessageAndDays.chat_id).forEach(this::save);
+
+    }
+
+    public ArrayList<Long> catIDs(){
+        ArrayList<Long> appUsersL=new ArrayList<>();
+       for (Map.Entry entry : appUsers.entrySet())
+       {AppUser appUser= (AppUser) entry.getValue();
+           appUsersL.add(appUser.getChatId());}
+   return appUsersL;}
 
 }

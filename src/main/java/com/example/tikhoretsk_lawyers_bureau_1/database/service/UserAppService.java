@@ -25,6 +25,7 @@ public class UserAppService {
 
     private final AppUserRepository repository;
 
+/*
     @PostConstruct
     public void setDate() {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -40,5 +41,6 @@ public class UserAppService {
         formattedText = String.format(text, LocalDate.now());
 
     }
+*/
 
 }

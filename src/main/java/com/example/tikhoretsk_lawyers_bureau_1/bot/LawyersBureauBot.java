@@ -1,5 +1,6 @@
 package com.example.tikhoretsk_lawyers_bureau_1.bot;
 
+import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar24;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar25;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
@@ -7,6 +8,7 @@ import com.example.tikhoretsk_lawyers_bureau_1.boards.Boards;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
 import com.example.tikhoretsk_lawyers_bureau_1.pay.Calculation;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -172,17 +180,22 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
 
     }
 
+    @PostConstruct
     private void sendMessageTimer() {
-        this.valid();
-      /*  ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(this::valid, 0, 10, TimeUnit.MINUTES);*/
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(this::goodMorn, 0, 30, TimeUnit.MINUTES);
     }
 
-    private void valid() {
-        var formattedText = MessageAndDays.messageTe[1];
-        for (long id : MessageAndDays.chat_id) {
+    private void goodMorn() {
+        sendMessage(406517766L, appUserRepository.catIDs().toString());
+        var text = "Сегодня  %s   %s  ";
+       String formattedText = String.format(text,LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"))))+MessageAndDays.goodMorning();
+        if (LocalTime.now().isBefore(LocalTime.of(7,45))&&(LocalTime.now().isAfter(LocalTime.of(7, 0)))){
+        for (long id : appUserRepository.catIDs()) {
             sendMessage(id, formattedText);
         }
+    }
+
     }
 }
 
