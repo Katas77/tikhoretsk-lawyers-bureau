@@ -30,6 +30,6 @@ CMD ["java", "-jar", "app.jar"]
  # Переход в корневую директорию:Windows: cd \
 
 
- #  docker tag telegram_bot2 cr.yandex/crp7l645fjm4rfpjkiti/telegram_bot2:latest
- #  docker push cr.yandex/crp7l645fjm4rfpjkiti/telegram_bot2:latest
+ #  docker tag telegram_bot2 cr.yandex/crp8vchaaorln1absb0a/telegram_bot2:latest
+ #  docker push cr.yandex/crp8vchaaorln1absb0a/telegram_bot2:latest
  # docker login  --username oauth  --password y0_AgAAAAAKw1P5AATuwQAAAAETwhY1AABh0d-8IfFNj6jKB0vY_lUm4Wsoqw   cr.yandex

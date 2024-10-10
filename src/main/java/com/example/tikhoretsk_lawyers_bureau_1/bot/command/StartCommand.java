@@ -1,5 +1,4 @@
 package com.example.tikhoretsk_lawyers_bureau_1.bot.command;
-
 import com.example.tikhoretsk_lawyers_bureau_1.boards.Boards;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Обработка команды начала работы с ботом
@@ -35,7 +31,7 @@ public class StartCommand implements IBotCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] strings) {
-        var text = "ChatId  %s,  UserName  %s, FirstName  %s, LastName  %s ";
+        var text = "ChatId  %s,  UserName  %s, FirstName  %s, LastName  %s  tap start";
         String formattedText = String.format(text, message.getChatId(), message.getChat().getUserName(), message.getChat().getFirstName(), message.getChat().getLastName());
         log.info(formattedText);
 

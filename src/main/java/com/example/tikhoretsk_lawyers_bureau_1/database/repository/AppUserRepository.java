@@ -19,7 +19,6 @@ public class AppUserRepository {
 
 
     public Optional<AppUser> findByIdAppUser(Long id) {
-        log.debug("Call findById in InMemoryTaskRepository. ID is: {}", id);
         return Optional.ofNullable(appUsers.get(id));
     }
 
@@ -28,9 +27,9 @@ public class AppUserRepository {
         AppUser appUser = AppUser.builder().chatId(chatId).build();
         if (this.findByIdAppUser(chatId).isEmpty()) {
             appUsers.put(chatId, appUser);
-            log.error("User with this chatId {} save", chatId);
+            log.info("User with this chatId {} save", chatId);
         } else {
-            log.error("User with this chatId {} isPresent", chatId);
+            log.info("User with this chatId {} isPresent", chatId);
         }
 
     }

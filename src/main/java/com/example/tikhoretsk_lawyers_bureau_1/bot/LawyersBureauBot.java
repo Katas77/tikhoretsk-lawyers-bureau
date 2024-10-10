@@ -1,6 +1,5 @@
 package com.example.tikhoretsk_lawyers_bureau_1.bot;
 
-import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar24;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar25;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
@@ -58,7 +57,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     }
 
     @Override
-    public void processNonCommandUpdate(Update update) {
+    public synchronized void processNonCommandUpdate(Update update) {
         if ((update.hasMessage() && update.getMessage().hasText())) {
             long id = update.getMessage().getChatId();
             if (appUserRepository.findByIdAppUser(id).isEmpty()) {
@@ -78,15 +77,12 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
         }
 
         if (!(update.hasMessage() && update.getMessage().hasText())) {
-            log.info(String.valueOf(update.getCallbackQuery().getMessage().getChatId()));
             String call_data = update.getCallbackQuery().getData();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
             if (appUserRepository.findByIdAppUser(chat_id).isEmpty()) {
                 appUserRepository.save(chat_id);
             }
             try {
-
-
                 switch (call_data) {
                     case "idea" -> sendMessage(chat_id, MessageAndDays.help);
                     case "hist" -> sendMessage(chat_id, MessageAndDays.history);
@@ -130,7 +126,6 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
             } catch (TelegramApiException e) {
                 log.error("Ошибка отправки сообщения", e);
             }
-
         }
     }
 
@@ -189,12 +184,12 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     private void goodMorn() {
         sendMessage(406517766L, appUserRepository.catIDs().toString());
         var text = "Сегодня  %s   %s  ";
-       String formattedText = String.format(text,LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"))))+MessageAndDays.goodMorning();
-        if (LocalTime.now().isBefore(LocalTime.of(7,45))&&(LocalTime.now().isAfter(LocalTime.of(7, 0)))){
-        for (long id : appUserRepository.catIDs()) {
-            sendMessage(id, formattedText);
+        String formattedText = String.format(text, LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru")))) + MessageAndDays.goodMorning();
+        if (LocalTime.now().isBefore(LocalTime.of(7, 45)) && (LocalTime.now().isAfter(LocalTime.of(7, 0)))) {
+            for (long id : appUserRepository.catIDs()) {
+                sendMessage(id, formattedText);
+            }
         }
-    }
 
     }
 }

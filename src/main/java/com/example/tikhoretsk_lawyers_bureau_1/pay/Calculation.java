@@ -5,6 +5,7 @@ import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class Calculation {
     private final AppUserRepository appUserRepository;
     private int total;
@@ -26,14 +28,12 @@ public class Calculation {
         if (appUserRepository.findByIdAppUser(chat_id).isEmpty() || appUserRepository.findByIdAppUser(chat_id).get().getParagraph() == null) {
             return "/start";
         }
-        Long id = Long.valueOf(chat_id);
-        AppUser appUser = appUserRepository.findByIdAppUser(id).orElseThrow();
+        AppUser appUser = appUserRepository.findByIdAppUser(chat_id).orElseThrow();
         return alla(appUser.getParagraph(), appUser) +
                 System.lineSeparator() + "Количество дней " + appUser.getPaymentDayList().size()
                 + System.lineSeparator() + "Итого к выплате подлежит сумма  - " + total + " руб., которую прошу перечислить на банковские реквизиты:"
                 + System.lineSeparator() + System.lineSeparator() + "/start";
     }
-
 
     String alla(String paragraph, AppUser appUser) {
         if (paragraph.startsWith("a")) {
@@ -72,7 +72,7 @@ public class Calculation {
             total = total + pay;
             all = all + dayER + " - " + sd + " - " + "  " + pay + "  руб." + System.lineSeparator();
         }
-
+        log.info("User with this chatId {} total = {} ", appUser.getChatId(), total);
         return all;
     }
 

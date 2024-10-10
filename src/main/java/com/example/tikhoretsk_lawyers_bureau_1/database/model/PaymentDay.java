@@ -14,5 +14,4 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PaymentDay {
     LocalDate datePay;
-
 }
