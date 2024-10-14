@@ -115,7 +115,7 @@ public class Boards {
         InlineKeyboardButton button16 = buttonGreat("КАТАСОНОВ Р.П.", "кат");
         InlineKeyboardButton button17 = buttonGreat("КУШНИРОВА Д.А.", "куш");
         button17.setUrl("https://ru.wikipedia.org/wiki/%D0%9E%D1%82%D0%BF%D1%83%D1%81%D0%BA_%D0%BF%D0%BE_%D0%B1%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8_%D0%B8_%D1%80%D0%BE%D0%B4%D0%B0%D0%BC");
-        button16.setUrl("https://github.com/Katas77/telegram-bot-gradle");
+        button16.setUrl("https://github.com/Katas77/tikhoretsk-lawyers-bureau-1");
 
         List<InlineKeyboardButton> buttons9 = new ArrayList<>();
         buttons9.add(button16);
