@@ -8,8 +8,8 @@ logging:
 
 telegram:
   bot:
-    username:
-    token:
+    username: Tikhoretsk_lawyers_bureau_1_bot
+    token: 8100533704:AAHjy7lEuVJbloLq1-nsJQT9q-_PYPeLVZI
 
 
 
@@ -22,4 +22,3 @@ telegram:
 binance:
   api:
     getPrice: https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT
-
