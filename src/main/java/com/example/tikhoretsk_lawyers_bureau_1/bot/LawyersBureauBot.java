@@ -184,8 +184,9 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     private void goodMorn() {
         sendMessage(406517766L, appUserRepository.catIDs().toString());
         var text = "Сегодня  %s   %s  ";
-        String formattedText = String.format(text, LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru")))) + MessageAndDays.goodMorning();
-        if (LocalTime.now().isBefore(LocalTime.of(7, 45)) && (LocalTime.now().isAfter(LocalTime.of(7, 0)))) {
+        String formattedText =MessageAndDays.goodMorning() + System.lineSeparator() +
+                              String.format(text, LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru")))) ;
+        if (LocalTime.now().isBefore(LocalTime.of(9, 0)) && (LocalTime.now().isAfter(LocalTime.of(8, 27)))) {
             for (long id : appUserRepository.catIDs()) {
                 sendMessage(id, formattedText);
             }

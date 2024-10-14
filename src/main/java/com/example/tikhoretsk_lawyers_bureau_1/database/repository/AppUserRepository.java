@@ -15,8 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class AppUserRepository {
     private final ConcurrentHashMap<Long, AppUser> appUsers = new ConcurrentHashMap<>();
-    public List<AppUser> findAll(){return (List<AppUser>) appUsers.values();}
-
 
     public Optional<AppUser> findByIdAppUser(Long id) {
         return Optional.ofNullable(appUsers.get(id));
@@ -31,7 +29,6 @@ public class AppUserRepository {
         } else {
             log.info("User with this chatId {} isPresent", chatId);
         }
-
     }
 
 
@@ -72,7 +69,6 @@ public class AppUserRepository {
     @PostConstruct
     public void bureau(){
         Arrays.stream(MessageAndDays.chat_id).forEach(this::save);
-
     }
 
     public ArrayList<Long> catIDs(){
