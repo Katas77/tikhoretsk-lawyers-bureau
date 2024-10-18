@@ -43,7 +43,7 @@
 - Spring Boot
 - Docker
 - Telegrambots
-- - Gradle
+- Gradle
 
 
 
