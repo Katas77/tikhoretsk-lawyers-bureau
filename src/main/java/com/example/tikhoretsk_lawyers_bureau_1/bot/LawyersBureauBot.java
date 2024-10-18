@@ -182,7 +182,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     }
 
     private void goodMorn() {
-        sendMessage(406517766L, appUserRepository.catIDs().toString());
+        //sendMessage(406517766L, appUserRepository.catIDs().toString());
         var text = "Сегодня  %s   %s  ";
         String formattedText =MessageAndDays.goodMorning() + System.lineSeparator() +
                               String.format(text, LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru")))) ;

@@ -20,6 +20,7 @@
 - Gradle (for building the application)
 - Spring Boot 3.2.3
 - Docker 
+- Gradle
 
 ## Setup and Installation
 - Clone the repository:
@@ -28,13 +29,10 @@
 - We execute the command /newbot and enter the name of the future bot, after which BotFather will generate a unique token, which will then be required to organize the interaction of the application with the created Telegram bot.
 - Enter the received data to application.yml
 - Build the application using Gradle:
-- Mvn clean install
-- Run the application:
 - For general use:
-- - Launch and configure the database via Docker
 - - To run using Docker, you need to enter the following commands in the terminal:
-- - cd docker
-- - docker-compose up
+- - docker build -t telegram_bot2 .   
+- - docker run telegram_bot2
 
 
 
@@ -45,6 +43,7 @@
 - Spring Boot
 - Docker
 - Telegrambots
+- - Gradle
 
 
 
