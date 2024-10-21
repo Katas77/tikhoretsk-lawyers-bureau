@@ -130,7 +130,7 @@ public class Boards {
         rowsInline.add(buttons7);
         rowsInline.add(buttons8);
         rowsInline.add(buttons9);
-        return messageGreat("Всегда помогут", rowsInline, chat_id);
+        return messageGreat("Всегда помогут и поддержат в трудную минуту:", rowsInline, chat_id);
     }
 
     public SendMessage paragraphs(long chat_id) {
