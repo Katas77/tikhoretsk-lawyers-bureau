@@ -143,11 +143,8 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
 
     public void parseDate(Message message) {
         String date = message.getText().replaceAll("[^0-9]", "");
-        String year = "20" + date.substring(4, 6);
-        String month = date.substring(2, 4);
-        String day = date.substring(0, 2);
-
-        PaymentDay payment = new PaymentDay(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
+        PaymentDay payment = new PaymentDay(LocalDate.parse(date, formatter));
         appUserRepository.setDay(message.getChatId(), payment);
     }
 

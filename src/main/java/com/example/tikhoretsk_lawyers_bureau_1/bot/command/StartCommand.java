@@ -33,7 +33,7 @@ public class StartCommand implements IBotCommand {
     public void processMessage(AbsSender absSender, Message message, String[] strings) {
         var text = "ChatId  %s,  UserName  %s, FirstName  %s, LastName  %s  tap start";
         String formattedText = String.format(text, message.getChatId(), message.getChat().getUserName(), message.getChat().getFirstName(), message.getChat().getLastName());
-        log.info(formattedText);
+        log.error(formattedText);
 
         try {
             absSender.execute(boards.startKeyboardAb(message.getChatId()));
