@@ -7,13 +7,10 @@ import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserReposi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import java.util.Arrays;
 import java.util.Comparator;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -21,63 +18,70 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Slf4j
 public class Calculation {
+
     private final AppUserRepository appUserRepository;
     private int total;
 
-    public String result(long chat_id) {
-        if (appUserRepository.findByIdAppUser(chat_id).isEmpty() || appUserRepository.findByIdAppUser(chat_id).get().getParagraph() == null) {
+    public String generateResult(long chatId) {
+        AppUser appUser = appUserRepository.findByIdAppUser(chatId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (appUser.getParagraph() == null) {
             return "/start";
         }
-        AppUser appUser = appUserRepository.findByIdAppUser(chat_id).orElseThrow();
-        return alla(appUser.getParagraph(), appUser) +
-                System.lineSeparator() + "Количество дней " + appUser.getPaymentDayList().size()
-                + System.lineSeparator() + "Итого к выплате подлежит сумма  - " + total + " руб., которую прошу перечислить на банковские реквизиты:"
-                + System.lineSeparator() + System.lineSeparator() + "/start";
+
+        String paymentSummary = calculatePayment(appUser.getParagraph(), appUser);
+        return String.format("%s%nКоличество дней: %d%nИтого к выплате: %d руб., которую прошу перечислить на банковские реквизиты:%n%n/start",
+                paymentSummary, appUser.getPaymentDayList().size(), total);
     }
 
-    String alla(String paragraph, AppUser appUser) {
-        if (paragraph.startsWith("a")) {
-            return wer(MessageAndDays.day2024[0], MessageAndDays.dayOff2024[0], MessageAndDays.day2025[0], MessageAndDays.dayOff2025[0], appUser);
-        }
-        if (paragraph.startsWith("b")) {
-            return wer(MessageAndDays.day2024[1], MessageAndDays.dayOff2024[1], MessageAndDays.day2025[1], MessageAndDays.dayOff2025[1], appUser);
-        }
-        if (paragraph.startsWith("v")) {
-            return wer(MessageAndDays.day2024[2], MessageAndDays.dayOff2024[2], MessageAndDays.day2025[2], MessageAndDays.dayOff2025[2], appUser);
-        }
-        if (paragraph.startsWith("g")) {
-            return wer(MessageAndDays.day2024[3], MessageAndDays.dayOff2024[3], MessageAndDays.day2025[3], MessageAndDays.dayOff2025[3], appUser);
-        } else return null;
+    private String calculatePayment(String paragraph, AppUser appUser) {
+        return switch (paragraph.charAt(0)) {
+            case 'a' -> calculateForParagraph(MessageAndDays.day2024[0], MessageAndDays.dayOff2024[0],
+                    MessageAndDays.day2025[0], MessageAndDays.dayOff2025[0], appUser);
+            case 'b' -> calculateForParagraph(MessageAndDays.day2024[1], MessageAndDays.dayOff2024[1],
+                    MessageAndDays.day2025[1], MessageAndDays.dayOff2025[1], appUser);
+            case 'v' -> calculateForParagraph(MessageAndDays.day2024[2], MessageAndDays.dayOff2024[2],
+                    MessageAndDays.day2025[2], MessageAndDays.dayOff2025[2], appUser);
+            case 'g' -> calculateForParagraph(MessageAndDays.day2024[3], MessageAndDays.dayOff2024[3],
+                    MessageAndDays.day2025[3], MessageAndDays.dayOff2025[3], appUser);
+            default -> null; // or throw an exception
+        };
     }
 
-    public String wer(int day24, int dayOff24, int day25, int dayOff25, AppUser appUser) {
+    private String calculateForParagraph(int day24, int dayOff24, int day25, int dayOff25, AppUser appUser) {
         total = 0;
         List<PaymentDay> paymentList = appUser.getPaymentDayList();
-        LocalDate date1Oct = LocalDate.of(2024, 10, 1);
-        int pay = 0;
-        String all = "";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"));
+        LocalDate dateStartOfOctober2024 = LocalDate.of(2024, 10, 1);
+        StringBuilder paymentDetails = new StringBuilder();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", new Locale("ru"));
+
         paymentList.sort(Comparator.comparing(PaymentDay::getDatePay));
+
         for (PaymentDay payment : paymentList) {
-            String dayER = formatter.format(payment.getDatePay());
-            String sd = formatter2.format(payment.getDatePay().getDayOfWeek());
-            if (payment.getDatePay().isBefore(date1Oct)) {
-                if (valid(sd, payment)) {
-                    pay = dayOff24;
-                } else pay = day24;
-            } else if (valid(sd, payment)) {
-                pay = dayOff25;
-            } else pay = day25;
-            total = total + pay;
-            all = all + dayER + " - " + sd + " - " + "  " + pay + "  руб." + System.lineSeparator();
+            String formattedDate = dateFormatter.format(payment.getDatePay());
+            String dayOfWeek = dayOfWeekFormatter.format(payment.getDatePay().getDayOfWeek());
+            int payAmount = calculatePaymentAmount(payment, day24, dayOff24, day25, dayOff25, dateStartOfOctober2024, dayOfWeek);
+
+            total += payAmount;
+            paymentDetails.append(String.format("%s - %s - %d руб.%n", formattedDate, dayOfWeek, payAmount));
         }
-        log.info("User with this chatId {} total = {} ", appUser.getChatId(), total);
-        return all;
+
+        log.info("User with chatId {} has total payment of {} ", appUser.getChatId(), total);
+        return paymentDetails.toString();
     }
 
-    private boolean valid(String sd, PaymentDay payment) {
-        return sd.contains("суббота") || sd.contains("воскресенье") || Arrays.stream(MessageAndDays.holidays).anyMatch(day -> payment.getDatePay().isEqual(day));
+    private int calculatePaymentAmount(PaymentDay payment, int day24, int dayOff24, int day25, int dayOff25, LocalDate dateThreshold, String dayOfWeek) {
+        if (payment.getDatePay().isBefore(dateThreshold)) {
+            return isWeekendOrHoliday(dayOfWeek, payment) ? dayOff24 : day24;
+        } else {
+            return isWeekendOrHoliday(dayOfWeek, payment) ? dayOff25 : day25;
+        }
     }
 
+    private boolean isWeekendOrHoliday(String dayOfWeek, PaymentDay payment) {
+        return dayOfWeek.contains("суббота") || dayOfWeek.contains("воскресенье") ||
+                Arrays.stream(MessageAndDays.holidays).anyMatch(day -> payment.getDatePay().isEqual(day));
+    }
 }

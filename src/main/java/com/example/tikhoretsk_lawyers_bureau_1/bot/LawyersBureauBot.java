@@ -17,17 +17,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 
 @Service
 @Slf4j
@@ -36,7 +33,6 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     private final Boards boards;
     private final Calculation calculation;
     private final AppUserRepository appUserRepository;
-
 
     public LawyersBureauBot(
             @Value("${telegram.bot.token}") String botToken,
@@ -49,6 +45,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
         this.calculation = calculation;
         this.appUserRepository = appUserRepository;
         commandList.forEach(this::register);
+        System.out.println(botToken);
     }
 
     @Override
@@ -58,82 +55,80 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
 
     @Override
     public synchronized void processNonCommandUpdate(Update update) {
-        if ((update.hasMessage() && update.getMessage().hasText())) {
-            long id = update.getMessage().getChatId();
-            if (appUserRepository.findByIdAppUser(id).isEmpty()) {
-                appUserRepository.save(id);
-            }
-            String message_text = update.getMessage().getText();
-            if (!(Objects.equals(message_text, "/start") || message_text.startsWith("/date_")))
-                sendMessage(id, "У меня сегодня нет настроения общаться на  сторонние  темы.  Нажмите /start ");
-            else if (message_text.startsWith("/date_")) {
-                parseDate(update.getMessage());
-                try {
-                    execute(boards.nextFinish(id));
-                } catch (TelegramApiException e) {
-                    log.error("Ошибка отправки сообщения", e);
-                }
-            }
-        }
-
-        if (!(update.hasMessage() && update.getMessage().hasText())) {
-            String call_data = update.getCallbackQuery().getData();
-            long chat_id = update.getCallbackQuery().getMessage().getChatId();
-            if (appUserRepository.findByIdAppUser(chat_id).isEmpty()) {
-                appUserRepository.save(chat_id);
-            }
-            try {
-                switch (call_data) {
-                    case "idea" -> sendMessage(chat_id, MessageAndDays.help);
-                    case "hist" -> sendMessage(chat_id, MessageAndDays.history);
-                    case "LR" -> execute(boards.defenders(chat_id));
-
-                    case "mo" -> sendMessage(chat_id, "+7 928 431-72-63");
-                    case "чу" -> sendMessage(chat_id, "+7 918 444-85-13");
-                    case "за" -> sendMessage(chat_id, "+7 928 428-44-15");
-                    case "па" -> sendMessage(chat_id, "+7 918 411-51-96");
-                    case "чм" -> sendMessage(chat_id, "+7 918 941-42-22");
-                    case "pr" -> sendMessage(chat_id, "+7 918 463-33-88");
-                    case "ка" -> sendMessage(chat_id, "+7 906 434-15-78");
-                    case "де" -> sendMessage(chat_id, "+7 918 291-03-68");
-                    case "кз" -> sendMessage(chat_id, "+7 918 119-41-19");
-                    case "ше" -> sendMessage(chat_id, "+7 918 214-03-43");
-                    case "да" -> sendMessage(chat_id, "+7 965 466-46-00");
-                    case "жд" -> sendMessage(chat_id, "+7 918 447-88-53");
-                    case "тю" -> sendMessage(chat_id, "+7 928 427-28-32");
-                    case "ст" -> sendMessage(chat_id, "Контр адмирал скрыл свои данные");
-
-
-                    case "Размер оплаты труда" -> execute(boards.paragraphs(chat_id));
-
-                    case "a" -> sendMessage2(chat_id, "a");
-                    case "b" -> sendMessage2(chat_id, "b");
-                    case "v" -> sendMessage2(chat_id, "v");
-                    case "g" -> sendMessage2(chat_id, "g");
-
-                    case "но" -> execute(boards.quarter(chat_id));
-                    case "законч" -> sendMessageParagraphAndF(chat_id, calculation.result(chat_id));
-
-                    case "quarter_1_24" -> sendMessage(chat_id, Calendar24.calendar1Q2024);
-                    case "quarter_2_24" -> sendMessage(chat_id, Calendar24.calendar2Q2024);
-                    case "quarter_3_24" -> sendMessage(chat_id, Calendar24.calendar3Q2024);
-                    case "quarter_4_24" -> sendMessage(chat_id, Calendar24.calendar4Q2024);
-                    case "quarter_1_25" -> sendMessage(chat_id, Calendar25.calendar1Q2025);
-                    case "quarter_2_25" -> sendMessage(chat_id, Calendar25.calendar2Q2025);
-                    case "quarter_3_25" -> sendMessage(chat_id, Calendar25.calendar3Q2025);
-
-                }
-            } catch (TelegramApiException e) {
-                log.error("Ошибка отправки сообщения", e);
-            }
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            handleTextMessage(update);
+        } else if (update.hasCallbackQuery()) {
+            handleCallbackQuery(update);
         }
     }
 
+    private void handleTextMessage(Update update) {
+        long chatId = update.getMessage().getChatId();
+        appUserRepository.findByIdAppUser(chatId).orElseGet(() -> {
+            appUserRepository.save(chatId);
+            return null;
+        });
+
+        String messageText = update.getMessage().getText();
+        if (!messageText.equals("/start") && !messageText.startsWith("/date_")) {
+            sendMessage(chatId, "У меня сегодня нет настроения общаться на сторонние темы. Нажмите /start");
+        } else if (messageText.startsWith("/date_")) {
+            parseDate(update.getMessage());
+            executeBoardCommand(chatId, boards.nextFinish(chatId));
+        }
+    }
+
+    private void handleCallbackQuery(Update update) {
+        long chatId = update.getCallbackQuery().getMessage().getChatId();
+        appUserRepository.findByIdAppUser(chatId).orElseGet(() -> {
+            appUserRepository.save(chatId);
+            return null;
+        });
+
+        String callData = update.getCallbackQuery().getData();
+        try {
+            switch (callData) {
+                case "idea" -> sendMessage(chatId, MessageAndDays.help);
+                case "hist" -> sendMessage(chatId, MessageAndDays.history);
+                case "LR" -> executeBoardCommand(chatId, boards.defenders(chatId));
+                case "mo" -> sendLawyerContact(chatId, "9284317263");
+                case "чу" -> sendLawyerContact(chatId, "9184448513");
+                case "за" -> sendLawyerContact(chatId, "9284284415");
+                case "па" -> sendLawyerContact(chatId, "9184115196");
+                case "чм" -> sendLawyerContact(chatId, "9189414222");
+                case "pr" -> sendLawyerContact(chatId, "9184633388");
+                case "ка" -> sendLawyerContact(chatId, "9064341578");
+                case "де" -> sendLawyerContact(chatId, "9182910368");
+                case "кз" -> sendLawyerContact(chatId, "9181194119");
+                case "ше" -> sendLawyerContact(chatId, "9182140343");
+                case "да" -> sendLawyerContact(chatId, "9654664600");
+                case "жд" -> sendLawyerContact(chatId, "9184478853");
+                case "тю" -> sendLawyerContact(chatId, "9284272832");
+                case "ст" -> sendMessage(chatId, "Контр адмирал скрыл свои данные");
+                case "Размер оплаты труда" -> executeBoardCommand(chatId, boards.paragraphs(chatId));
+                case "a", "b", "v", "g" -> sendMessage2(chatId, callData);
+                case "но" -> executeBoardCommand(chatId, boards.quarter(chatId));
+                case "законч" -> sendMessageParagraphAndF(chatId, calculation.generateResult(chatId));
+                case "quarter_1_24" -> sendMessage(chatId, Calendar24.calendar1Q2024);
+                case "quarter_2_24" -> sendMessage(chatId, Calendar24.calendar2Q2024);
+                case "quarter_3_24" -> sendMessage(chatId, Calendar24.calendar3Q2024);
+                case "quarter_4_24" -> sendMessage(chatId, Calendar24.calendar4Q2024);
+                case "quarter_1_25" -> sendMessage(chatId, Calendar25.calendar1Q2025);
+                case "quarter_2_25" -> sendMessage(chatId, Calendar25.calendar2Q2025);
+                case "quarter_3_25" -> sendMessage(chatId, Calendar25.calendar3Q2025);
+            }
+        } catch (TelegramApiException e) {
+            log.error("Ошибка отправки сообщения", e);
+        }
+    }
+
+    private void sendLawyerContact(Long chatId, String phoneNumber) {
+        sendMessage(chatId, "+7 " + phoneNumber);
+    }
 
     private void sendMessage(Long chatId, String text) {
-        var chatIdStr = String.valueOf(chatId);
-        var sendMessage = new SendMessage(chatIdStr, text);
         try {
+            var sendMessage = new SendMessage(String.valueOf(chatId), text);
             execute(sendMessage);
         } catch (TelegramApiException e) {
             log.error("Ошибка отправки сообщения", e);
@@ -143,36 +138,27 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     private void sendMessage2(Long chatId, String paragraph) {
         appUserRepository.newDays(chatId);
         appUserRepository.setParagraph(chatId, paragraph);
-        try {
-            execute(boards.quarter(chatId));
-        } catch (TelegramApiException e) {
-            log.error("Ошибка отправки сообщения", e);
-        }
+        executeBoardCommand(chatId, boards.quarter(chatId));
     }
 
     public void parseDate(Message message) {
         String date = message.getText().replaceAll("[^0-9]", "");
-        String[] arrayDate = date.split("");
-        String yearSt = "20" + arrayDate[4] + arrayDate[5];
-        int year = Integer.parseInt(yearSt);
-        String monthSt = arrayDate[2] + arrayDate[3];
-        int month = Integer.parseInt(monthSt);
-        String daySt = arrayDate[0] + arrayDate[1];
-        int day = Integer.parseInt(daySt);
-        PaymentDay payment = new PaymentDay(LocalDate.of(year, month, day));
+        String year = "20" + date.substring(4, 6);
+        String month = date.substring(2, 4);
+        String day = date.substring(0, 2);
+
+        PaymentDay payment = new PaymentDay(LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
         appUserRepository.setDay(message.getChatId(), payment);
     }
 
     private void sendMessageParagraphAndF(Long chatId, String text) throws TelegramApiException {
-        var chatIdStr = String.valueOf(chatId);
-        var message = new SendMessage(chatIdStr, text);
         if (appUserRepository.findByIdAppUser(chatId).isEmpty() || appUserRepository.findByIdAppUser(chatId).get().getParagraph() == null) {
             sendMessage(chatId, "Начнем с начала /start");
-        } else
-            execute(message);
+        } else {
+            sendMessage(chatId, text);
+        }
         appUserRepository.newDays(chatId);
         appUserRepository.newParagraph(chatId);
-
     }
 
     @PostConstruct
@@ -182,17 +168,23 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     }
 
     private void goodMorn() {
-        //sendMessage(406517766L, appUserRepository.catIDs().toString());
-        var text = "Сегодня  %s   %s  ";
-        String formattedText =MessageAndDays.goodMorning() + System.lineSeparator() +
-                              String.format(text, LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru")))) ;
-        if (LocalTime.now().isBefore(LocalTime.of(9, 0)) && (LocalTime.now().isAfter(LocalTime.of(8, 27)))) {
+        if (LocalTime.now().isAfter(LocalTime.of(8, 27)) && LocalTime.now().isBefore(LocalTime.of(9, 0))) {
+            String formattedText = String.format("Сегодня %s %s",
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"))));
+
             for (long id : appUserRepository.catIDs()) {
-                sendMessage(id, formattedText);
+                sendMessage(id, MessageAndDays.goodMorning() + System.lineSeparator() + formattedText);
             }
         }
+    }
 
+    private void executeBoardCommand(Long chatId, SendMessage message) {
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Ошибка отправки сообщения", e);
+        }
     }
 }
-
 

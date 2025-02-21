@@ -6,10 +6,8 @@ import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 
 @Repository
 @Slf4j
@@ -20,45 +18,34 @@ public class AppUserRepository {
         return Optional.ofNullable(appUsers.get(id));
     }
 
-
     public void save(Long chatId) {
         AppUser appUser = AppUser.builder().chatId(chatId).build();
-        if (this.findByIdAppUser(chatId).isEmpty()) {
-            appUsers.put(chatId, appUser);
-            log.info("User with this chatId {} save", chatId);
+        if (appUsers.putIfAbsent(chatId, appUser) == null) {
+            log.info("User with chatId {} saved", chatId);
         } else {
-            log.info("User with this chatId {} isPresent", chatId);
+            log.info("User with chatId {} is already present", chatId);
         }
     }
 
-
     public void setDay(Long chatId, PaymentDay paymentDay) {
-        List<PaymentDay> paymentDays = new ArrayList<>();
         AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
-        if (appUser.getPaymentDayList() == null) {
-            appUser.setPaymentDayList(paymentDays);
-        } else {
-            paymentDays = appUser.getPaymentDayList();
-        }
+        List<PaymentDay> paymentDays = Optional.ofNullable(appUser.getPaymentDayList())
+                .orElseGet(ArrayList::new);
         paymentDays.add(paymentDay);
         appUser.setPaymentDayList(paymentDays);
         appUsers.put(chatId, appUser);
-
     }
 
     public void setParagraph(Long chatId, String paragraph) {
         AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
         appUser.setParagraph(paragraph);
         appUsers.put(chatId, appUser);
-
     }
 
     public void newDays(Long chatId) {
         AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
-        List<PaymentDay> paymentDays = new ArrayList<>();
-        appUser.setPaymentDayList(paymentDays);
+        appUser.setPaymentDayList(new ArrayList<>());
         appUsers.put(chatId, appUser);
-
     }
 
     public void newParagraph(Long chatId) {
@@ -66,16 +53,14 @@ public class AppUserRepository {
         appUser.setParagraph(null);
         appUsers.put(chatId, appUser);
     }
+
     @PostConstruct
-    public void bureau(){
-        Arrays.stream(MessageAndDays.chat_id).forEach(this::save);
+    public void bureau() {
+        Arrays.stream(MessageAndDays.chat_id)
+                .forEach(this::save);
     }
 
-    public ArrayList<Long> catIDs(){
-        ArrayList<Long> appUsersL=new ArrayList<>();
-       for (Map.Entry entry : appUsers.entrySet())
-       {AppUser appUser= (AppUser) entry.getValue();
-           appUsersL.add(appUser.getChatId());}
-   return appUsersL;}
-
+    public List<Long> catIDs() {
+        return new ArrayList<>(appUsers.keySet());
+    }
 }

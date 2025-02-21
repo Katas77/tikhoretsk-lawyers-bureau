@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -68,8 +68,8 @@ public class Boards {
     public SendMessage defenders(long chat_id) {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
         List<InlineKeyboardButton> buttons = new ArrayList<>();
-        InlineKeyboardButton button = buttonGreat("ПРОШИНА П.Г.", "pr");
-        InlineKeyboardButton button1 = buttonGreat("МОРОЗОВ И.А.", "mo");
+        InlineKeyboardButton button = buttonGreatMoro("ПРОШИНА П.Г.", "pr");
+        InlineKeyboardButton button1 = buttonGreatMoro("МОРОЗОВ И.А.", "mo");
         buttons.add(button);
         buttons.add(button1);
         InlineKeyboardButton button2 = buttonGreat("СТЕПАНЕНКО В.Ю.", "ст");
@@ -77,7 +77,7 @@ public class Boards {
         List<InlineKeyboardButton> buttons2 = new ArrayList<>();
         buttons2.add(button2);
         buttons2.add(button3);
-        InlineKeyboardButton button4 = buttonGreat("ЗАХАРЬЕВА Т.И.", "за");
+        InlineKeyboardButton button4 = buttonGreatTwo("ЗАХАРЬЕВА Т.И.", "за");
         InlineKeyboardButton button5 = buttonGreat("ПАРУШЕВА Е.В.", "па");
         List<InlineKeyboardButton> buttons3 = new ArrayList<>();
         buttons3.add(button4);
@@ -171,13 +171,13 @@ public class Boards {
             return paragraphs(chat_id);
         }
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
-        List<InlineKeyboardButton> buttons1 = Arrays.asList(buttonGreat("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2024", "quarter_1_24"));
-        List<InlineKeyboardButton> buttons2 = Arrays.asList(buttonGreat("АПРЕЛЬ МАРТ ИЮНЬ 2024", "quarter_2_24"));
-        List<InlineKeyboardButton> buttons3 = Arrays.asList(buttonGreat("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 2024", "quarter_3_24"));
-        List<InlineKeyboardButton> buttons4 = Arrays.asList(buttonGreat("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 2024", "quarter_4_24"));
-        List<InlineKeyboardButton> buttons5 = Arrays.asList(buttonGreat("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2025", "quarter_1_25"));
-        List<InlineKeyboardButton> buttons6 = Arrays.asList(buttonGreat("АПРЕЛЬ МАРТ ИЮНЬ 2025", "quarter_2_25"));
-        List<InlineKeyboardButton> buttons7 = Arrays.asList(buttonGreat("ИЮНЬ АВГУСТ СЕНТЯБРЬ 2025", "quarter_3_25"));
+        List<InlineKeyboardButton> buttons1 = Collections.singletonList(buttonGreat("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2024", "quarter_1_24"));
+        List<InlineKeyboardButton> buttons2 = Collections.singletonList(buttonGreat("АПРЕЛЬ МАРТ ИЮНЬ 2024", "quarter_2_24"));
+        List<InlineKeyboardButton> buttons3 = Collections.singletonList(buttonGreat("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 2024", "quarter_3_24"));
+        List<InlineKeyboardButton> buttons4 = Collections.singletonList(buttonGreat("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 2024", "quarter_4_24"));
+        List<InlineKeyboardButton> buttons5 = Collections.singletonList(buttonGreat("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2025", "quarter_1_25"));
+        List<InlineKeyboardButton> buttons6 = Collections.singletonList(buttonGreat("АПРЕЛЬ МАРТ ИЮНЬ 2025", "quarter_2_25"));
+        List<InlineKeyboardButton> buttons7 = Collections.singletonList(buttonGreat("ИЮНЬ АВГУСТ СЕНТЯБРЬ 2025", "quarter_3_25"));
         rowsInline.add(buttons1);
         rowsInline.add(buttons2);
         rowsInline.add(buttons3);
@@ -194,8 +194,18 @@ public class Boards {
         button.setText(text);
         button.setCallbackData(backData);
         return button;
+    }  public InlineKeyboardButton buttonGreatTwo(String text, String backData) {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("🌺 " + text + " 🌺");
+        button.setCallbackData(backData);
+        return button;
     }
-
+    public InlineKeyboardButton buttonGreatMoro(String text, String backData) {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("⭐ "  +text + " ⭐");
+        button.setCallbackData(backData);
+        return button;
+    }
     public SendMessage messageGreat(String text, List<List<InlineKeyboardButton>> rowsInline, long chat_id) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         markupInline.setKeyboard(rowsInline);
@@ -208,3 +218,16 @@ public class Boards {
     }
 
 }
+/**
+ * Примеры эмодзи для украшения текста кнопок:
+ * Сердце: ❤️
+ * Звезда: ⭐
+ * Флаг: 🚩
+ * Галочка: ✅
+ * Вопросительный знак: ⁉️
+ * Смех: 😂
+ * Аплодисменты: 👏
+ * Подарок: 🎁
+ * Планета Земля: 🌍
+ * Компьютер: 💻
+ */
