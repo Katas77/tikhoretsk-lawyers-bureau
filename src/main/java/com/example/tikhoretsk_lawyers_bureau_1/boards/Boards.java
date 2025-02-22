@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,146 +21,102 @@ public class Boards {
 
     public SendMessage startKeyboardAb(long chat_id) {
         appUserRepository.save(chat_id);
-        SendMessage message = new SendMessage();
-        message.setChatId(chat_id);
-        message.setText("Тихорецкий филиал № 1  Краснодарской Коллегии адвокатов адвокатской  палаты Краснодарского края приветствует вас!!!");
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+
+        String welcomeMessage = "Тихорецкий филиал № 1  Краснодарской Коллегии адвокатов адвокатской  палаты Краснодарского края приветствует вас!!!";
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-        List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
-        InlineKeyboardButton button = buttonGreat("Адвокатская палата Краснодарского края", "saitSait");
-        button.setUrl("https://apkk.ru/");
-        InlineKeyboardButton button1 = buttonGreat("НАШ АДРЕС", "sait");
-        button1.setUrl("https://www.google.com/maps/place/%D1%83%D0%BB.+%D0%AD%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%B0,+174,+%D0%A2%D0%B8%D1%85%D0%BE%D1%80%D0%B5%D1%86%D0%BA,+%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9+%D0%BA%D1%80%D0%B0%D0%B9,+352120/@45.8573395,40.1215312,19z/data=!4m6!3m5!1s0x40fb1fbb77b46029:0x8dfa863ee15c0b2b!8m2!3d45.857787!4d40.122075!16s%2Fg%2F11dfj0wtwq?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D");
 
 
-        rowInline1.add(button);
-        rowInline1.add(button1);
+        rowsInline.add(createButtonRow(
+                createCustomButton("Адвокатская палата Краснодарского края", "saitSait", "https://apkk.ru/"),
+                createCustomButton("НАШ АДРЕС", "sait", "https://www.google.com/maps/place/%D1%83%D0%BB.+%D0%AD%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%B0,+174,+%D0%A2%D0%B8%D1%85%D0%BE%D1%80%D0%B5%D1%86%D0%BA,+%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9+%D0%BA%D1%80%D0%B0%D0%B9,+352120/@45.8573395,40.1215312,19z/data=!4m6!3m5!1s0x40fb1fbb77b46029:0x8dfa863ee15c0b2b!8m2!3d45.857787!4d40.122075!16s%2Fg%2F11dfj0wtwq?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D")
+        ));
 
-        List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+        rowsInline.add(createButtonRow(
+                createCustomButton("НАШИ АДВОКАТЫ", "LR"),
+                createCustomButton("Образцы заявлений", "idea")
+        ));
 
-        InlineKeyboardButton button2 = buttonGreat("НАШИ АДВОКАТЫ", "LR");
-        InlineKeyboardButton button3 = buttonGreat("Образцы заявлений", "idea");
+        rowsInline.add(createButtonRow(
+                createCustomButton("Расчет размера оплаты труда адвоката по назначению", "Размер оплаты труда"),
+                createCustomButton("НАША ИСТОРИЯ", "hist")
+        ));
 
-        rowInline2.add(button2);
-        rowInline2.add(button3);
-
-
-        List<InlineKeyboardButton> rowInline11 = new ArrayList<>();
-        List<InlineKeyboardButton> rowInline22 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton21 = buttonGreat(" Расчет размера оплаты труда адвоката по назначению", "Размер оплаты труда");
-        InlineKeyboardButton inlineKeyboardButton22 = buttonGreat("НАША ИСТОРИЯ", "hist");
-
-
-        rowInline11.add(inlineKeyboardButton21);
-        rowInline22.add(inlineKeyboardButton22);
-        rowsInline.add(rowInline22);
-        rowsInline.add(rowInline1);
-        rowsInline.add(rowInline2);
-
-        rowsInline.add(rowInline11);
-
-        markupInline.setKeyboard(rowsInline);
-        message.setReplyMarkup(markupInline);
-
-        return message;
+        return messageGreat(welcomeMessage, rowsInline, chat_id);
 
     }
 
-    public SendMessage defenders(long chat_id) {
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        InlineKeyboardButton button = buttonGreatMoro("ПРОШИНА П.Г.", "pr");
-        InlineKeyboardButton button1 = buttonGreatMoro("МОРОЗОВ И.А.", "mo");
-        buttons.add(button);
-        buttons.add(button1);
-        InlineKeyboardButton button2 = buttonGreat("СТЕПАНЕНКО В.Ю.", "ст");
-        InlineKeyboardButton button3 = buttonGreat("ЧУРИЛОВ А.П.", "чу");
-        List<InlineKeyboardButton> buttons2 = new ArrayList<>();
-        buttons2.add(button2);
-        buttons2.add(button3);
-        InlineKeyboardButton button4 = buttonGreatTwo("ЗАХАРЬЕВА Т.И.", "за");
-        InlineKeyboardButton button5 = buttonGreat("ПАРУШЕВА Е.В.", "па");
-        List<InlineKeyboardButton> buttons3 = new ArrayList<>();
-        buttons3.add(button4);
-        buttons3.add(button5);
+    public SendMessage defenders(long chatId) {
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
 
-        InlineKeyboardButton button6 = buttonGreat("ЧМЫХ П.С.", "чм");
-        InlineKeyboardButton button7 = buttonGreat("КАРНАЧЕВА А.В.", "ка");
-        List<InlineKeyboardButton> buttons4 = new ArrayList<>();
-        buttons4.add(button6);
-        buttons4.add(button7);
-        InlineKeyboardButton button8 = buttonGreat("ДЕРГАЧ Д.Б.", "де");
-        InlineKeyboardButton button9 = buttonGreat("КАЗАРЯН Е.М.", "кз");
-        List<InlineKeyboardButton> buttons5 = new ArrayList<>();
-        buttons5.add(button8);
-        buttons5.add(button9);
-        InlineKeyboardButton button10 = buttonGreat("ШЕВЕЛЁВА И.В.", "ше");
-        InlineKeyboardButton button11 = buttonGreat("ВААГН ДАВТЯН", "да");
-        List<InlineKeyboardButton> buttons6 = new ArrayList<>();
-        buttons6.add(button10);
-        buttons6.add(button11);
-        InlineKeyboardButton button12 = buttonGreat("ЖДАНОВ А.В.", "жд");
-        InlineKeyboardButton button13 = buttonGreat("ТЮРИНА И.В.", "тю");
+        // Create button rows using helper methods
+        rowsInline.add(createButtonRow(
+                buttonGreatStars("ПРОШИНА П.Г.", "pr"),
+                buttonGreatStars("МОРОЗОВ И.А.", "mo")
+        ));
 
-        List<InlineKeyboardButton> buttons7 = new ArrayList<>();
-        buttons7.add(button12);
-        buttons7.add(button13);
+        rowsInline.add(createButtonRow(
+                createCustomButton("СТЕПАНЕНКО В.Ю.", "ст"),
+                createCustomButton("ЧУРИЛОВ А.П.", "чу")
+        ));
 
-        InlineKeyboardButton button14 = buttonGreat("АЛЕКСАНДР БУРОВ", "сш");
-        InlineKeyboardButton button15 = buttonGreat("СОФИЯ", "соф");
-        button14.setUrl("https://ru.wikipedia.org/wiki/%D0%9B%D0%B5%D0%B2");
-        button15.setUrl("https://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%84%D0%B8%D1%8F_(%D1%84%D0%B8%D0%BB%D0%BE%D1%81%D0%BE%D1%84%D0%B8%D1%8F)");
-        List<InlineKeyboardButton> buttons8 = new ArrayList<>();
-        buttons8.add(button14);
-        buttons8.add(button15);
-        InlineKeyboardButton button16 = buttonGreat("КАТАСОНОВ Р.П.", "кат");
-        InlineKeyboardButton button17 = buttonGreat("КУШНИРОВА Д.А.", "куш");
-        button17.setUrl("https://ru.wikipedia.org/wiki/%D0%9E%D1%82%D0%BF%D1%83%D1%81%D0%BA_%D0%BF%D0%BE_%D0%B1%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8_%D0%B8_%D1%80%D0%BE%D0%B4%D0%B0%D0%BC");
-        button16.setUrl("https://github.com/Katas77/tikhoretsk-lawyers-bureau-1");
+        rowsInline.add(createButtonRow(
+                buttonGreatRose("ЗАХАРЬЕВА Т.И.", "за"),
+                createCustomButton("ПАРУШЕВА Е.В.", "па")
+        ));
 
-        List<InlineKeyboardButton> buttons9 = new ArrayList<>();
-        buttons9.add(button16);
-        buttons9.add(button17);
+        rowsInline.add(createButtonRow(
+                createCustomButton("ЧМЫХ П.С.", "чм"),
+                createCustomButton("КАРНАЧЕВА А.В.", "ка")
+        ));
 
-        rowsInline.add(buttons);
-        rowsInline.add(buttons2);
-        rowsInline.add(buttons3);
-        rowsInline.add(buttons4);
-        rowsInline.add(buttons5);
-        rowsInline.add(buttons6);
-        rowsInline.add(buttons7);
-        rowsInline.add(buttons8);
-        rowsInline.add(buttons9);
-        return messageGreat("Всегда помогут и поддержат в трудную минуту:", rowsInline, chat_id);
+        rowsInline.add(createButtonRow(
+                createCustomButton("ДЕРГАЧ Д.Б.", "де"),
+                createCustomButton("КАЗАРЯН Е.М.", "кз")
+        ));
+
+        rowsInline.add(createButtonRow(
+                createCustomButton("ШЕВЕЛЁВА И.В.", "ше"),
+                createCustomButton("ВААГН ДАВТЯН", "да")
+        ));
+
+        rowsInline.add(createButtonRow(
+                createCustomButton("ЖДАНОВ А.В.", "жд"),
+                createCustomButton("ТЮРИНА И.В.", "тю")
+        ));
+
+        // Adding buttons with URLs
+        rowsInline.add(createButtonRow(
+                createCustomButton("АЛЕКСАНДР БУРОВ", "сш", "https://ru.wikipedia.org/wiki/%D0%9B%D0%B5%D0%B2"),
+                createCustomButton("СОФИЯ", "соф", "https://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D1%84%D0%B8%D1%8F_(%D1%84%D0%B8%D0%BB%D0%BE%D1%81%D0%BE%D1%84%D0%B8%D1%8F)")
+        ));
+
+        rowsInline.add(createButtonRow(
+                createCustomButton("КАТАСОНОВ Р.П.", "кат", "https://github.com/Katas77/tikhoretsk-lawyers-bureau-1"),
+                createCustomButton("КУШНИРОВА Д.А.", "куш", "https://ru.wikipedia.org/wiki/%D0%9E%D1%82%D0%BF%D1%83%D1%81%D0%BA_%D0%BF%D0%BE_%D0%B1%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8_%D0%B8_%D1%80%D0%BE%D0%B4%D0%B0%D0%BC")
+        ));
+
+        return messageGreat("Всегда помогут и поддержат в трудную минуту:", rowsInline, chatId);
     }
+
 
     public SendMessage paragraphs(long chat_id) {
         appUserRepository.newDays(chat_id);
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        InlineKeyboardButton button1 = buttonGreat("'А'", "a");
-        InlineKeyboardButton button2 = buttonGreat("'Б'", "b");
-        InlineKeyboardButton button3 = buttonGreat("'В'", "v");
-        InlineKeyboardButton button4 = buttonGreat("'Г'", "g");
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-        buttons.add(button4);
-        rowsInline.add(buttons);
-
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButtonRow(
+                createCustomButton("'А'", "a"),
+                createCustomButton("'Б'", "b"),
+                createCustomButton("'В'", "v"),
+                createCustomButton("'Г'", "g")
+        ));
         return messageGreat(MessageAndDays.textPay, rowsInline, chat_id);
     }
 
     public SendMessage nextFinish(long chat_id) {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        InlineKeyboardButton button1 = buttonGreat("НОВАЯ ДАТА", "но");
-        InlineKeyboardButton button2 = buttonGreat("ЗАКОНЧИТЬ", "законч");
-
-        buttons.add(button1);
-        buttons.add(button2);
-
-        rowsInline.add(buttons);
+        rowsInline.add(createButtonRow(
+                createCustomButton("НОВАЯ ДАТА", "но"),
+                createCustomButton("ЗАКОНЧИТЬ", "законч")
+        ));
         if (appUserRepository.findByIdAppUser(chat_id).orElseThrow().getParagraph() == null) {
             return paragraphs(chat_id);
         }
@@ -170,42 +127,49 @@ public class Boards {
         if (appUserRepository.findByIdAppUser(chat_id).orElseThrow().getParagraph() == null) {
             return paragraphs(chat_id);
         }
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
-        List<InlineKeyboardButton> buttons1 = Collections.singletonList(buttonGreat("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2024", "quarter_1_24"));
-        List<InlineKeyboardButton> buttons2 = Collections.singletonList(buttonGreat("АПРЕЛЬ МАРТ ИЮНЬ 2024", "quarter_2_24"));
-        List<InlineKeyboardButton> buttons3 = Collections.singletonList(buttonGreat("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 2024", "quarter_3_24"));
-        List<InlineKeyboardButton> buttons4 = Collections.singletonList(buttonGreat("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 2024", "quarter_4_24"));
-        List<InlineKeyboardButton> buttons5 = Collections.singletonList(buttonGreat("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2025", "quarter_1_25"));
-        List<InlineKeyboardButton> buttons6 = Collections.singletonList(buttonGreat("АПРЕЛЬ МАРТ ИЮНЬ 2025", "quarter_2_25"));
-        List<InlineKeyboardButton> buttons7 = Collections.singletonList(buttonGreat("ИЮНЬ АВГУСТ СЕНТЯБРЬ 2025", "quarter_3_25"));
-        rowsInline.add(buttons1);
-        rowsInline.add(buttons2);
-        rowsInline.add(buttons3);
-        rowsInline.add(buttons4);
-        rowsInline.add(buttons5);
-        rowsInline.add(buttons6);
-        rowsInline.add(buttons7);
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2024", "quarter_1_24"));
+        rowsInline.add(createButtonRow("АПРЕЛЬ МАРТ ИЮНЬ 2024", "quarter_2_24"));
+        rowsInline.add(createButtonRow("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 2024", "quarter_3_24"));
+        rowsInline.add(createButtonRow("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 2024", "quarter_4_24"));
+        rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2025", "quarter_1_25"));
+        rowsInline.add(createButtonRow("АПРЕЛЬ МАРТ ИЮНЬ 2025", "quarter_2_25"));
+        rowsInline.add(createButtonRow("ИЮНЬ АВГУСТ СЕНТЯБРЬ 2025", "quarter_3_25"));
 
         return messageGreat("ВЫБЕРЕТЕ КВАРТАЛ", rowsInline, chat_id);
     }
 
-    public InlineKeyboardButton buttonGreat(String text, String backData) {
+    public InlineKeyboardButton buttonGreatRose(String text, String backData) {
+        return createCustomButton("🌺 " + text + " 🌺", backData);
+    }
+
+    public InlineKeyboardButton buttonGreatStars(String text, String backData) {
+        return createCustomButton("⭐ " + text + " ⭐", backData);
+    }
+
+    private List<InlineKeyboardButton> createButtonRow(String text, String backData) {
+        return Collections.singletonList(createCustomButton(text, backData));
+    }
+
+    private List<InlineKeyboardButton> createButtonRow(InlineKeyboardButton... buttons) {
+        return new ArrayList<>(Arrays.asList(buttons));
+    }
+
+
+    public InlineKeyboardButton createCustomButton(String text, String backData) {
+        return createCustomButton(text, backData, null);
+    }
+
+    public InlineKeyboardButton createCustomButton(String text, String backData, String url) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(text);
         button.setCallbackData(backData);
-        return button;
-    }  public InlineKeyboardButton buttonGreatTwo(String text, String backData) {
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("🌺 " + text + " 🌺");
-        button.setCallbackData(backData);
+        if (url != null) {
+            button.setUrl(url);
+        }
         return button;
     }
-    public InlineKeyboardButton buttonGreatMoro(String text, String backData) {
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("⭐ "  +text + " ⭐");
-        button.setCallbackData(backData);
-        return button;
-    }
+
     public SendMessage messageGreat(String text, List<List<InlineKeyboardButton>> rowsInline, long chat_id) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         markupInline.setKeyboard(rowsInline);
