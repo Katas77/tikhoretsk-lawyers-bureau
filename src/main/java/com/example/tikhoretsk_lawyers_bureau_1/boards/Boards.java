@@ -100,7 +100,7 @@ public class Boards {
 
 
     public SendMessage paragraphs(long chat_id) {
-        appUserRepository.newDays(chat_id);
+        appUserRepository.resetPaymentDays(chat_id);
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         rowsInline.add(createButtonRow(
                 createCustomButton("'А'", "a"),
@@ -117,14 +117,14 @@ public class Boards {
                 createCustomButton("НОВАЯ ДАТА", "но"),
                 createCustomButton("ЗАКОНЧИТЬ", "законч")
         ));
-        if (appUserRepository.findByIdAppUser(chat_id).orElseThrow().getParagraph() == null) {
+        if (appUserRepository.findById(chat_id).orElseThrow().getParagraph() == null) {
             return paragraphs(chat_id);
         }
         return messageGreat("ВЫБЕРЕТЕ", rowsInline, chat_id);
     }
 
     public SendMessage quarter(long chat_id) {
-        if (appUserRepository.findByIdAppUser(chat_id).orElseThrow().getParagraph() == null) {
+        if (appUserRepository.findById(chat_id).orElseThrow().getParagraph() == null) {
             return paragraphs(chat_id);
         }
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();

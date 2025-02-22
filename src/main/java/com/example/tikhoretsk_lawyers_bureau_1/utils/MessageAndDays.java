@@ -8,11 +8,11 @@ public class MessageAndDays {
     public static final String history = "Наш филиал, из непрерывно действующих, старейший в краснодарском крае, однако история ещё не написана Прасковья Георгиевна  и Игорь Анатольевич исправляют ситуацию!!!.";
     public static final String start = """
             Привет! Данный бот помогает рассчитать размер вознаграждения защитника по назначению.
-           
-           
-             
-             
-             
+            
+            
+            
+            
+            
             """;
     public static final String textPay = "Логика приложения поддерживает обработку данных с  01 января 2024 года по 30 сентября 2025 ( учтены праздничные и выходные дни и индексация оплаты). В логику приложения не  включено ночное время."
             + System.lineSeparator() + "Выберите подпункта «  » пункта 22.1, Положения о возмещении процессуальных издержек, связанных с производством по уголовному делу…";
@@ -24,8 +24,8 @@ public class MessageAndDays {
             "уже не в силах исправить сложившуюся ситуацию.";
 
 
-    public final static int[] day2024    = {2359, 2118, 1882, 1646};
-    public final static int[] day2025    = {2479, 2226, 1978, 1730};
+    public final static int[] day2024 = {2359, 2118, 1882, 1646};
+    public final static int[] day2025 = {2479, 2226, 1978, 1730};
     public final static int[] dayOff2024 = {3676, 3193, 2722, 2249};
     public final static int[] dayOff2025 = {3863, 3356, 2861, 2364};
     public final static LocalDate[] holidays = {
@@ -65,8 +65,8 @@ public class MessageAndDays {
     };
 
 
-    public static String goodMorning(){
-        ArrayList<String> goodMornings=new ArrayList<>();
+    public static String goodMorning() {
+        ArrayList<String> goodMornings = new ArrayList<>();
         goodMornings.add("Доброе утро! Сегодня отличный день, чтобы начать что-то новое... например, завтракать.");
         goodMornings.add("Пора вставать! Не забудь, что на завтрак можно есть не только сладости.");
         goodMornings.add("Доброе утро! На улице светит солнце... или это просто ты снова включил свет?");
@@ -104,16 +104,11 @@ public class MessageAndDays {
         goodMornings.add("Просыпайся! Твои мечты замечательные, но и завтрак неплох.");
         goodMornings.add("Утро! Если бы сон был олимпийским видом спорта, у нас было бы золото.");
         Collections.shuffle(goodMornings);
-    return goodMornings.get(0);}
+        return goodMornings.get(0);
+    }
 
 
-
-
-
-    public  static  final  Long[] chat_id={434737035L, 846878161L, 406517766L, 803901509L, 1383650677L, 1052145142L, 5328965521L,1267312358L};
-
-
-
+    public static final Long[] chat_id = {434737035L, 846878161L, 406517766L, 803901509L, 1383650677L, 1052145142L, 5328965521L, 1267312358L};
 
 
 }

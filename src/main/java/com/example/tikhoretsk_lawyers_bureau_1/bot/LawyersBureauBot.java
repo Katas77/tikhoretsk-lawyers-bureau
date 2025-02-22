@@ -64,7 +64,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
 
     private void handleTextMessage(Update update) {
         long chatId = update.getMessage().getChatId();
-        appUserRepository.findByIdAppUser(chatId).orElseGet(() -> {
+        appUserRepository.findById(chatId).orElseGet(() -> {
             appUserRepository.save(chatId);
             return null;
         });
@@ -80,7 +80,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
 
     private void handleCallbackQuery(Update update) {
         long chatId = update.getCallbackQuery().getMessage().getChatId();
-        appUserRepository.findByIdAppUser(chatId).orElseGet(() -> {
+        appUserRepository.findById(chatId).orElseGet(() -> {
             appUserRepository.save(chatId);
             return null;
         });
@@ -136,8 +136,8 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     }
 
     private void sendMessage2(Long chatId, String paragraph) {
-        appUserRepository.newDays(chatId);
-        appUserRepository.setParagraph(chatId, paragraph);
+        appUserRepository.resetPaymentDays(chatId);
+        appUserRepository.updateParagraph(chatId, paragraph);
         executeBoardCommand(chatId, boards.quarter(chatId));
     }
 
@@ -145,17 +145,17 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
         String date = message.getText().replaceAll("[^0-9]", "");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
         PaymentDay payment = new PaymentDay(LocalDate.parse(date, formatter));
-        appUserRepository.setDay(message.getChatId(), payment);
+        appUserRepository.addPaymentDay(message.getChatId(), payment);
     }
 
     private void sendMessageParagraphAndF(Long chatId, String text) throws TelegramApiException {
-        if (appUserRepository.findByIdAppUser(chatId).isEmpty() || appUserRepository.findByIdAppUser(chatId).get().getParagraph() == null) {
+        if (appUserRepository.findById(chatId).isEmpty() || appUserRepository.findById(chatId).get().getParagraph() == null) {
             sendMessage(chatId, "Начнем с начала /start");
         } else {
             sendMessage(chatId, text);
         }
-        appUserRepository.newDays(chatId);
-        appUserRepository.newParagraph(chatId);
+        appUserRepository.resetPaymentDays(chatId);
+        appUserRepository.clearParagraph(chatId);
     }
 
     @PostConstruct
@@ -170,7 +170,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
                     LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
                     LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"))));
 
-            for (long id : appUserRepository.catIDs()) {
+            for (long id : appUserRepository.getChatIds()) {
                 sendMessage(id, MessageAndDays.goodMorning() + System.lineSeparator() + formattedText);
             }
         }

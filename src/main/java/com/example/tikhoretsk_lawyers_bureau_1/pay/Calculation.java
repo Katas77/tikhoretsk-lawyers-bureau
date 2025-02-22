@@ -23,7 +23,7 @@ public class Calculation {
     private int total;
 
     public String generateResult(long chatId) {
-        AppUser appUser = appUserRepository.findByIdAppUser(chatId)
+        AppUser appUser = appUserRepository.findById(chatId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if (appUser.getParagraph() == null) {

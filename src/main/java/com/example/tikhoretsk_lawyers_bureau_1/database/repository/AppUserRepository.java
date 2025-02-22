@@ -6,61 +6,67 @@ import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
 @Slf4j
+@Repository
 public class AppUserRepository {
     private final ConcurrentHashMap<Long, AppUser> appUsers = new ConcurrentHashMap<>();
 
-    public Optional<AppUser> findByIdAppUser(Long id) {
+    public Optional<AppUser> findById(Long id) {
         return Optional.ofNullable(appUsers.get(id));
     }
 
     public void save(Long chatId) {
         AppUser appUser = AppUser.builder().chatId(chatId).build();
-        if (appUsers.putIfAbsent(chatId, appUser) == null) {
-            log.info("User with chatId {} saved", chatId);
+        AppUser existingUser = appUsers.putIfAbsent(chatId, appUser);
+
+        if (existingUser == null) {
+            log.info("User with chatId {} has been saved", chatId);
         } else {
             log.info("User with chatId {} is already present", chatId);
         }
     }
 
-    public void setDay(Long chatId, PaymentDay paymentDay) {
-        AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
+    public void addPaymentDay(Long chatId, PaymentDay paymentDay) {
+        AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
+
         List<PaymentDay> paymentDays = Optional.ofNullable(appUser.getPaymentDayList())
                 .orElseGet(ArrayList::new);
         paymentDays.add(paymentDay);
+
         appUser.setPaymentDayList(paymentDays);
-        appUsers.put(chatId, appUser);
+        // No need to put back in ConcurrentHashMap unless something changes
     }
 
-    public void setParagraph(Long chatId, String paragraph) {
-        AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
+    public void updateParagraph(Long chatId, String paragraph) {
+        AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
         appUser.setParagraph(paragraph);
-        appUsers.put(chatId, appUser);
+        // No need to put back in ConcurrentHashMap unless something changes
     }
 
-    public void newDays(Long chatId) {
-        AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
+    public void resetPaymentDays(Long chatId) {
+        AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
         appUser.setPaymentDayList(new ArrayList<>());
-        appUsers.put(chatId, appUser);
+        // No need to put back in ConcurrentHashMap unless something changes
     }
 
-    public void newParagraph(Long chatId) {
-        AppUser appUser = this.findByIdAppUser(chatId).orElseThrow();
+    public void clearParagraph(Long chatId) {
+        AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
         appUser.setParagraph(null);
-        appUsers.put(chatId, appUser);
+        // No need to put back in ConcurrentHashMap unless something changes
     }
 
     @PostConstruct
-    public void bureau() {
+    public void initialize() {
         Arrays.stream(MessageAndDays.chat_id)
                 .forEach(this::save);
     }
 
-    public List<Long> catIDs() {
+    public List<Long> getChatIds() {
         return new ArrayList<>(appUsers.keySet());
     }
 }
