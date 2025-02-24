@@ -37,8 +37,8 @@ public class StickerCommand implements IBotCommand {
     private void sendSticker(long chatId,AbsSender absSender) {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
-        //InputFile photo = new InputFile("https://9001545.ru/img/%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D1%82%D1%8C-%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%B3%D0%BE-%D0%B0%D0%B4%D0%B2%D0%BE%D0%BA%D0%B0%D1%82%D0%B0.jpg");
-        InputFile photo = new InputFile(new File("image/3.jpg"));
+        InputFile photo = new InputFile("https://9001545.ru/img/%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D1%82%D1%8C-%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%B3%D0%BE-%D0%B0%D0%B4%D0%B2%D0%BE%D0%BA%D0%B0%D1%82%D0%B0.jpg");
+        //InputFile photo = new InputFile(new File("image/3.jpg"));
         sendPhoto.setPhoto(photo);
         SendSticker sticker = new SendSticker();
         sticker.setChatId(String.valueOf(chatId));
