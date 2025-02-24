@@ -23,14 +23,12 @@ public class DellCommand implements IBotCommand {
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] strings) {
         deleteMessage(message.getChatId(), message.getMessageId(), absSender);
-
     }
 
     public void deleteMessage(long chatId, int messageId, AbsSender absSender) {
         DeleteMessage deleteMessage = new DeleteMessage();
         deleteMessage.setChatId(String.valueOf(chatId));
         deleteMessage.setMessageId(messageId);
-
         try {
             absSender.execute(deleteMessage);
             log.info("Message with ID {} has been deleted.", messageId);
