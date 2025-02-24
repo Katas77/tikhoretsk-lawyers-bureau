@@ -6,7 +6,7 @@ logging:
 telegram:
   bot:
     username: Tikhoretsk_lawyers_bureau_1_bot
-    token: 8100533704:AAHjy7lEuVJbloLq1-nsJQT9q-_PYPeLVZI
+    token: ${token}
     notify:
       delay:
         value: 10
