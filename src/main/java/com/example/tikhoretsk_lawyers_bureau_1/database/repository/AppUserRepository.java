@@ -6,8 +6,6 @@ import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,25 +37,22 @@ public class AppUserRepository {
         paymentDays.add(paymentDay);
 
         appUser.setPaymentDayList(paymentDays);
-        // No need to put back in ConcurrentHashMap unless something changes
+
     }
 
     public void updateParagraph(Long chatId, String paragraph) {
         AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
         appUser.setParagraph(paragraph);
-        // No need to put back in ConcurrentHashMap unless something changes
     }
 
     public void resetPaymentDays(Long chatId) {
         AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
         appUser.setPaymentDayList(new ArrayList<>());
-        // No need to put back in ConcurrentHashMap unless something changes
     }
 
     public void clearParagraph(Long chatId) {
         AppUser appUser = findById(chatId).orElseThrow(() -> new NoSuchElementException("User not found"));
         appUser.setParagraph(null);
-        // No need to put back in ConcurrentHashMap unless something changes
     }
 
     @PostConstruct

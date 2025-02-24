@@ -45,7 +45,7 @@ public class Calculation {
                     MessageAndDays.day2025[2], MessageAndDays.dayOff2025[2], appUser);
             case 'g' -> calculateForParagraph(MessageAndDays.day2024[3], MessageAndDays.dayOff2024[3],
                     MessageAndDays.day2025[3], MessageAndDays.dayOff2025[3], appUser);
-            default -> null; // or throw an exception
+            default -> null;
         };
     }
 

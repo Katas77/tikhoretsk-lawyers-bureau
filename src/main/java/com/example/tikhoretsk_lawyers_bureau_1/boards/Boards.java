@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -115,7 +114,7 @@ public class Boards {
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();//2
         rowsInline.add(createButtonRow(
                 createCustomButton("НОВАЯ ДАТА", "но"),
-                createCustomButton("ЗАКОНЧИТЬ", "законч")
+                createCustomButton("ЗАКОНЧИТЬ", "зкч")
         ));
         if (appUserRepository.findById(chat_id).orElseThrow().getParagraph() == null) {
             return paragraphs(chat_id);
@@ -129,11 +128,11 @@ public class Boards {
         }
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2024", "quarter_1_24"));
-        rowsInline.add(createButtonRow("АПРЕЛЬ МАРТ ИЮНЬ 2024", "quarter_2_24"));
+        rowsInline.add(createButtonRow("АПРЕЛЬ МАЙ ИЮНЬ 2024", "quarter_2_24"));
         rowsInline.add(createButtonRow("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 2024", "quarter_3_24"));
         rowsInline.add(createButtonRow("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 2024", "quarter_4_24"));
         rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 2025", "quarter_1_25"));
-        rowsInline.add(createButtonRow("АПРЕЛЬ МАРТ ИЮНЬ 2025", "quarter_2_25"));
+        rowsInline.add(createButtonRow("АПРЕЛЬ МАЙ ИЮНЬ 2025", "quarter_2_25"));
         rowsInline.add(createButtonRow("ИЮНЬ АВГУСТ СЕНТЯБРЬ 2025", "quarter_3_25"));
 
         return messageGreat("ВЫБЕРЕТЕ КВАРТАЛ", rowsInline, chat_id);

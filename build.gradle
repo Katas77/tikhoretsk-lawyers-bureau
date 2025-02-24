@@ -3,9 +3,10 @@ plugins {
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
+
 ext {
 	telegrambotsVersion = '6.8.0'
-	springOrmVersion = '6.0.13'
+	springOrmVersion = '6.0.13' // Этот параметр не используется, возможно, его стоит убрать
 }
 
 group = 'com.example'
@@ -17,33 +18,32 @@ java {
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
 
 dependencies {
+	// В зависимости от JavaFX, укажите нужный модуль, если требуется
+	implementation("org.openjfx:javafx-controls:11") // Добавлен javafx-controls
+	implementation("org.openjfx:javafx-fxml:11") // Если требуется работа с FXML
 
 	implementation "org.telegram:telegrambots:$telegrambotsVersion"
 	implementation "org.telegram:telegrambotsextensions:$telegrambotsVersion"
 
 	implementation 'org.springframework.boot:spring-boot-starter'
 
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
-
+	// Библиотека для создания штрих-кодов
+	implementation("net.sourceforge.barbecue:barbecue:1.5-beta1")
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

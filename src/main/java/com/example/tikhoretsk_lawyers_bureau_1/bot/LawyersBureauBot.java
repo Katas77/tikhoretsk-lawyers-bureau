@@ -1,12 +1,12 @@
 package com.example.tikhoretsk_lawyers_bureau_1.bot;
 
-import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar24;
-import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar25;
-import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
 import com.example.tikhoretsk_lawyers_bureau_1.boards.Boards;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
 import com.example.tikhoretsk_lawyers_bureau_1.pay.Calculation;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar24;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar25;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +45,6 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
         this.calculation = calculation;
         this.appUserRepository = appUserRepository;
         commandList.forEach(this::register);
-        System.out.println(botToken);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
         });
 
         String messageText = update.getMessage().getText();
-        if (!messageText.equals("/start") && !messageText.startsWith("/date_")) {
+        if (!messageText.startsWith("/")) {
             sendMessage(chatId, "У меня сегодня нет настроения общаться на сторонние темы. Нажмите /start");
         } else if (messageText.startsWith("/date_")) {
             parseDate(update.getMessage());
@@ -108,7 +107,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
                 case "Размер оплаты труда" -> executeBoardCommand(chatId, boards.paragraphs(chatId));
                 case "a", "b", "v", "g" -> sendMessage2(chatId, callData);
                 case "но" -> executeBoardCommand(chatId, boards.quarter(chatId));
-                case "законч" -> sendMessageParagraphAndF(chatId, calculation.generateResult(chatId));
+                case "зкч" -> sendMessageParagraphAndF(chatId, calculation.generateResult(chatId));
                 case "quarter_1_24" -> sendMessage(chatId, Calendar24.calendar1Q2024);
                 case "quarter_2_24" -> sendMessage(chatId, Calendar24.calendar2Q2024);
                 case "quarter_3_24" -> sendMessage(chatId, Calendar24.calendar3Q2024);
@@ -169,13 +168,11 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
             String formattedText = String.format("Сегодня %s %s",
                     LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
                     LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"))));
-
             for (long id : appUserRepository.getChatIds()) {
                 sendMessage(id, MessageAndDays.goodMorning() + System.lineSeparator() + formattedText);
             }
         }
     }
-
     private void executeBoardCommand(Long chatId, SendMessage message) {
         try {
             execute(message);
@@ -183,5 +180,9 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
             log.error("Ошибка отправки сообщения", e);
         }
     }
-}
+
+    }
+
+
+
 
