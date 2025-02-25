@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
+import org.telegram.telegrambots.meta.api.methods.invoices.SendInvoice;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.payments.LabeledPrice;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -61,22 +63,23 @@ public class PayCommand implements IBotCommand {
         message.setReplyMarkup(markupInline);
         return message;
     }
-}
-/**
-private void createInvoice(long chatId) {
-    SendInvoice invoice = new SendInvoice();
-    invoice.setChatId(String.valueOf(chatId));
-    invoice.setTitle("Оплата товара");
-    invoice.setDescription("Описание товара для оплаты.");
-    invoice.setPayload("Unique_Payload"); // Уникальный идентификатор товара
-    invoice.setProviderToken("YourProviderToken"); // Токен вашего провайдера платежа
-    invoice.setStartParameter("start"); // Уникальный параметр для запуска
-    invoice.setCurrency("RUB"); // Валюта
-    invoice.setPrices(List.of(new LabeledPrice("Товар", 10000))); // Список цен (100.00 RUB)
+    private void createInvoice(long chatId,AbsSender absSender ) {
+        SendInvoice invoice = new SendInvoice();
+        invoice.setChatId(String.valueOf(chatId));
+        invoice.setTitle("Оплата товара");
+        invoice.setDescription("Описание товара для оплаты.");
+        invoice.setPayload("Unique_Payload"); // Уникальный идентификатор товара
+        invoice.setProviderToken("YourProviderToken"); // Токен вашего провайдера платежа
+        invoice.setStartParameter("start"); // Уникальный параметр для запуска
+        invoice.setCurrency("RUB"); // Валюта
+        invoice.setPrices(List.of(new LabeledPrice("Товар", 10000))); // Список цен (100.00 RUB)
 
-    try {
-        execute(invoice);
-    } catch (TelegramApiException e) {
-        e.printStackTrace();
+        try {
+           absSender.execute(invoice);
+        } catch (TelegramApiException e) {
+            System.err.println(e.getMessage());
+        }
     }
-}*/
+
+}
+
