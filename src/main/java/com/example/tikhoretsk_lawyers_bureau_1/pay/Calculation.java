@@ -1,6 +1,6 @@
 package com.example.tikhoretsk_lawyers_bureau_1.pay;
 
-import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.Stats;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
 import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserRepository;
@@ -30,29 +30,15 @@ public class Calculation {
             return "/start";
         }
 
-        String paymentSummary = calculatePayment(appUser.getParagraph(), appUser);
+        String paymentSummary = calculatePayment( appUser);
         return String.format("%s%nКоличество дней: %d%nИтого к выплате: %d руб., которую прошу перечислить на банковские реквизиты:%n%n/start",
                 paymentSummary, appUser.getPaymentDayList().size(), total);
     }
 
-    private String calculatePayment(String paragraph, AppUser appUser) {
-        return switch (paragraph.charAt(0)) {
-            case 'a' -> calculateForParagraph(MessageAndDays.day2024[0], MessageAndDays.dayOff2024[0],
-                    MessageAndDays.day2025[0], MessageAndDays.dayOff2025[0], appUser);
-            case 'b' -> calculateForParagraph(MessageAndDays.day2024[1], MessageAndDays.dayOff2024[1],
-                    MessageAndDays.day2025[1], MessageAndDays.dayOff2025[1], appUser);
-            case 'v' -> calculateForParagraph(MessageAndDays.day2024[2], MessageAndDays.dayOff2024[2],
-                    MessageAndDays.day2025[2], MessageAndDays.dayOff2025[2], appUser);
-            case 'g' -> calculateForParagraph(MessageAndDays.day2024[3], MessageAndDays.dayOff2024[3],
-                    MessageAndDays.day2025[3], MessageAndDays.dayOff2025[3], appUser);
-            default -> null;
-        };
-    }
 
-    private String calculateForParagraph(int day24, int dayOff24, int day25, int dayOff25, AppUser appUser) {
+    private String calculatePayment( AppUser appUser) {
         total = 0;
         List<PaymentDay> paymentList = appUser.getPaymentDayList();
-        LocalDate dateStartOfOctober2024 = LocalDate.of(2024, 10, 1);
         StringBuilder paymentDetails = new StringBuilder();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         DateTimeFormatter dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", new Locale("ru"));
@@ -62,7 +48,7 @@ public class Calculation {
         for (PaymentDay payment : paymentList) {
             String formattedDate = dateFormatter.format(payment.getDatePay());
             String dayOfWeek = dayOfWeekFormatter.format(payment.getDatePay().getDayOfWeek());
-            int payAmount = calculatePaymentAmount(payment, day24, dayOff24, day25, dayOff25, dateStartOfOctober2024, dayOfWeek);
+            int payAmount = dayPay(payment, dayOfWeek,appUser.getParagraph());
 
             total += payAmount;
             paymentDetails.append(String.format("%s - %s - %d руб.%n", formattedDate, dayOfWeek, payAmount));
@@ -72,16 +58,58 @@ public class Calculation {
         return paymentDetails.toString();
     }
 
-    private int calculatePaymentAmount(PaymentDay payment, int day24, int dayOff24, int day25, int dayOff25, LocalDate dateThreshold, String dayOfWeek) {
-        if (payment.getDatePay().isBefore(dateThreshold)) {
-            return isWeekendOrHoliday(dayOfWeek, payment) ? dayOff24 : day24;
-        } else {
-            return isWeekendOrHoliday(dayOfWeek, payment) ? dayOff25 : day25;
-        }
-    }
+
 
     private boolean isWeekendOrHoliday(String dayOfWeek, PaymentDay payment) {
         return dayOfWeek.contains("суббота") || dayOfWeek.contains("воскресенье") ||
-                Arrays.stream(MessageAndDays.holidays).anyMatch(day -> payment.getDatePay().isEqual(day));
+                Arrays.stream(Stats.holidays).anyMatch(day -> payment.getDatePay().isEqual(day));
     }
+
+
+    private int dayPay(PaymentDay payment, String dayOfWeek,String paragraph) {
+        int yearIdx = getYearIndex(payment.getDatePay());   // 0 -> 2024-range, 1 -> 2025-range, 2 -> 2026-range
+        int pIdx = paragraphIndex(paragraph); // 0..3 для а,б,в,г
+
+        int[][] dayArrays = new int[][]{
+                Stats.day2024,
+                Stats.day2025,
+                Stats.day2026
+        };
+        int[][] dayOffArrays = new int[][]{
+                Stats.dayOff2024,
+                Stats.dayOff2025,
+                Stats.dayOff2026
+        };
+
+        boolean holiday = isWeekendOrHoliday(dayOfWeek, payment);
+
+        if (holiday) {
+            return dayOffArrays[yearIdx][pIdx];
+        } else {
+            return dayArrays[yearIdx][pIdx];
+        }
+    }
+
+    private int getYearIndex(LocalDate date) {
+        if (date.isAfter(Stats.RANGE_2024_START) && date.isBefore(Stats.RANGE_2024_END)) return 0;
+        if (date.isAfter(Stats.RANGE_2025_START) && date.isBefore(Stats.RANGE_2025_END)) return 1;
+        if (date.isAfter(Stats.RANGE_2026_START) && date.isBefore(Stats.RANGE_2026_END)) return 2;
+        throw new IllegalArgumentException("Дата вне поддерживаемых диапазонов: " + date);
+    }
+
+    private int paragraphIndex(String paragraph) {
+        if (paragraph == null || paragraph.isEmpty()) throw new IllegalArgumentException("Параграф пустой");
+        char c = Character.toLowerCase(paragraph.charAt(0));
+        return switch (c) {
+            case 'a' -> 0;
+            case 'b' -> 1;
+            case 'v' -> 2;
+            case 'g' -> 3;
+            default -> throw new IllegalArgumentException("Неизвестный параграф: " + paragraph);
+        };
+    }
+
+
+
+
 }

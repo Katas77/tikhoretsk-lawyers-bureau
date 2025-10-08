@@ -2,7 +2,7 @@ package com.example.tikhoretsk_lawyers_bureau_1.database.repository;
 
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.AppUser;
 import com.example.tikhoretsk_lawyers_bureau_1.database.model.PaymentDay;
-import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.Stats;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -57,7 +57,7 @@ public class AppUserRepository {
 
     @PostConstruct
     public void initialize() {
-        Arrays.stream(MessageAndDays.chat_id)
+        Arrays.stream(Stats.chat_id)
                 .forEach(this::save);
     }
 

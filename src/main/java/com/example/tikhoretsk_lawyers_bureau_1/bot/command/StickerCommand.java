@@ -1,4 +1,5 @@
 package com.example.tikhoretsk_lawyers_bureau_1.bot.command;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
@@ -13,8 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.File;
-
 @Service
 @Slf4j
 public class StickerCommand implements IBotCommand {
@@ -23,8 +22,8 @@ public class StickerCommand implements IBotCommand {
     private static final String COMMAND_DESCRIPTION = "Запускает stick";
     private static final String PHOTO_URL = "https://9001545.ru/img/%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D1%82%D1%8C-%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%B3%D0%BE-%D0%B0%D0%B4%D0%B2%D0%BE%D0%BA%D0%B0%D1%82%D0%B0.jpg";
     private static final String STICKER_ID = "CAACAgIAAxkBAAIcIGe8QDBGVYgx5QdpBAQFgB9EIppOAAIbAAPANk8Tfb2Kg8tETWo2BA";
-    private static final String STICKER_ID_PASTER="CAACAgIAAxkBAAIczWe9ilL5zxPqAiMB3h9V3VqgwxpmAAIOFgACOezQSg1dA4vIGTVkNgQ";
-    private static final String STICKER_ID_JIM ="CAADBQADiQMAAukKyAPZH7wCI2BwFxYE";
+    private static final String STICKER_ID_PASTER = "CAACAgIAAxkBAAIczWe9ilL5zxPqAiMB3h9V3VqgwxpmAAIOFgACOezQSg1dA4vIGTVkNgQ";
+    private static final String STICKER_ID_JIM = "CAADBQADiQMAAukKyAPZH7wCI2BwFxYE";
 
 
     @Override
@@ -46,9 +45,9 @@ public class StickerCommand implements IBotCommand {
     private void sendSticker(long chatId, AbsSender absSender) {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
-        sendPhoto .setPhoto(new InputFile(PHOTO_URL));
+        sendPhoto.setPhoto(new InputFile(PHOTO_URL));
         //InputFile photo = new InputFile(new File("image/3.jpg"));
-       // sendPhoto .setPhoto(photo);
+        // sendPhoto .setPhoto(photo);
         SendSticker sticker = new SendSticker();
         sticker.setChatId(chatId);
         sticker.setSticker(new InputFile(STICKER_ID_PASTER));
@@ -61,12 +60,10 @@ public class StickerCommand implements IBotCommand {
         }
     }
 
-
-
     private void sendFormattedMessage(long chatId, AbsSender absSender) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message .setParseMode(ParseMode.HTML);
+        message.setParseMode(ParseMode.HTML);
         message.setText("<b>Привет!</b> Это <i>красивое</i> сообщение!");
 
         try {
@@ -75,8 +72,9 @@ public class StickerCommand implements IBotCommand {
             log.error("Failed to send formatted message: {}", e.getMessage());
         }
     }
-    private void stickerMessage(Update update) {
-        Message message=update.getMessage();
+
+    private void getStickerId(Update update) {
+        Message message = update.getMessage();
         Sticker sticker = message.getSticker();
         if (sticker != null) {
             System.out.println(sticker);// id Sticker

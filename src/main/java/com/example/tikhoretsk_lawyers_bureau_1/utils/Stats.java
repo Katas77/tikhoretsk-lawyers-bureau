@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MessageAndDays {
+public class Stats {
     public static final String history = "Наш филиал является старейшим в Краснодарском крае и одним из немногих, который продолжает свою работу без перерывов. Однако наша история еще ждет своего отражения" +
             " на страницах настоящих и будущих событий. Прасковья Георгиевна и Игорь Анатольевич работают над ситуацией, чтобы вернуть ей должное внимание и значимость!";
-    public static final String textPay = "Логика приложения поддерживает обработку данных с  01 января 2024 года по 30 сентября 2025 ( учтены праздничные и выходные дни и индексация оплаты). В логику приложения не  включено ночное время."
+    public static final String textPay = "Логика приложения поддерживает обработку данных с  01 января 2024 года по 30 сентября 2026 ( учтены праздничные и выходные дни и индексация оплаты). В логику приложения не  включено ночное время."
             + System.lineSeparator() + "Выберите подпункта «  » пункта 22.1, Положения о возмещении процессуальных издержек, связанных с производством по уголовному делу…";
 
 
@@ -22,71 +22,46 @@ public class MessageAndDays {
     public final static int[] day2025 = {2479, 2226, 1978, 1730};
     public final static int[] dayOff2024 = {3676, 3193, 2722, 2249};
     public final static int[] dayOff2025 = {3863, 3356, 2861, 2364};
+    public final static int[] day2026 = {2667, 2395, 2128, 1861};
+    public final static int[] dayOff2026 = {4156, 3611, 3078, 2544};
     public final static LocalDate[] holidays = {
-            // Нерабочие дни 2024 года
-            LocalDate.of(2024, 1, 1), // Новый год
-            LocalDate.of(2024, 1, 2), // Новый год
-            LocalDate.of(2024, 1, 3), // Новый год
-            LocalDate.of(2024, 1, 4), // Новый год
-            LocalDate.of(2024, 1, 5), // Новый год
-            LocalDate.of(2024, 1, 6), // Новый год
-            LocalDate.of(2024, 1, 7), // Рождество Христово
-            LocalDate.of(2024, 2, 24), // Суббота перед Днем защитника Отечества
-            LocalDate.of(2024, 2, 25), // Воскресенье после Дня защитника Отечества
-            LocalDate.of(2024, 3, 8), // Международный женский день
-            LocalDate.of(2024, 3, 9), // Перенос выходного с субботы
-            LocalDate.of(2024, 3, 10), // Воскресенье после Международного женского дня
-            LocalDate.of(2024, 5, 1), // День весны и труда
-            LocalDate.of(2024, 5, 2), // Перенос выходного с воскресенья
-            LocalDate.of(2024, 5, 3), // Пятница между праздниками
-            LocalDate.of(2024, 5, 4), // Суббота между праздниками
-            LocalDate.of(2024, 5, 5), // Воскресенье между праздниками
-            LocalDate.of(2024, 5, 9), // День Победы
-            LocalDate.of(2024, 5, 10), // Перенос выходного с пятницы
-            LocalDate.of(2024, 5, 11), // Суббота после Дня Победы
-            LocalDate.of(2024, 5, 12), // Воскресенье после Дня Победы
-            LocalDate.of(2024, 6, 12), // День России
-            LocalDate.of(2024, 6, 15), // Суббота после Дня России
-            LocalDate.of(2024, 6, 16), // Воскресенье после Дня России
-            LocalDate.of(2024, 11, 2), // Суббота перед Днем народного единства
-            LocalDate.of(2024, 11, 3), // Воскресенье перед Днем народного единства
-            LocalDate.of(2024, 11, 4), // День народного единства
-            LocalDate.of(2024, 12, 28), // Суббота перед предновогодними праздниками
-            LocalDate.of(2024, 12, 29), // Воскресенье перед предновогодними праздниками
-            LocalDate.of(2024, 12, 30), // Предновогодний выходной
-            LocalDate.of(2024, 12, 31), // Предновогодний выходной
+            // 2024
+            LocalDate.of(2024, 1, 1),
+            LocalDate.of(2024, 1, 2),
+            LocalDate.of(2024, 1, 3),
+            LocalDate.of(2024, 1, 4),
+            LocalDate.of(2024, 1, 5),
+            LocalDate.of(2024, 1, 6),
+            LocalDate.of(2024, 1, 7),
+            LocalDate.of(2024, 1, 8),
+            LocalDate.of(2024, 2, 23),
+            LocalDate.of(2024, 3, 8),
+            LocalDate.of(2024, 4, 29), // перенос
+            LocalDate.of(2024, 5, 1),
+            LocalDate.of(2024, 5, 9),
+            LocalDate.of(2024, 6, 12),
+            LocalDate.of(2024, 11, 4),
+            LocalDate.of(2024, 12, 30), // перенос
 
-            // Нерабочие дни 2025 года
-            LocalDate.of(2025, 1, 1), // Новый год
-            LocalDate.of(2025, 1, 2), // Новый год
-            LocalDate.of(2025, 1, 3), // Новый год
-            LocalDate.of(2025, 1, 4), // Новый год
-            LocalDate.of(2025, 1, 5), // Новый год
-            LocalDate.of(2025, 1, 6), // Новый год
-            LocalDate.of(2025, 1, 7), // Рождество Христово
-            LocalDate.of(2025, 1, 8), // Новый год
-            LocalDate.of(2025, 3, 8), // Международный женский день
-            LocalDate.of(2025, 3, 9), // Перенос выходного с субботы
-            LocalDate.of(2025, 5, 1), // День весны и труда
-            LocalDate.of(2025, 5, 2), // Перенос выходного с воскресенья
-            LocalDate.of(2025, 5, 8), // День Победы
-            LocalDate.of(2025, 5, 9), // День Победы
-            LocalDate.of(2025, 5, 10), // Перенос выходного с пятницы
-            LocalDate.of(2025, 5, 11), // Суббота после Дня Победы
-            LocalDate.of(2025, 5, 12), // Воскресенье после Дня Победы
-            LocalDate.of(2025, 6, 12), // День России
-            LocalDate.of(2025, 6, 14), // Суббота после Дня России
-            LocalDate.of(2025, 6, 15), // Воскресенье после Дня России
-            LocalDate.of(2025, 11, 1), // Суббота перед Днем народного единства
-            LocalDate.of(2025, 11, 2), // Воскресенье перед Днем народного единства
-            LocalDate.of(2025, 11, 3), // День народного единства
-            LocalDate.of(2025, 11, 4), // Перенос выходного с понедельника
-            LocalDate.of(2025, 12, 27), // Суббота перед предновогодними праздниками
-            LocalDate.of(2025, 12, 28), // Воскресенье перед предновогодними праздниками
-            LocalDate.of(2025, 12, 31) // Предновогодний выходной
+            // 2025
+            LocalDate.of(2025, 1, 1),
+            LocalDate.of(2025, 1, 2),
+            LocalDate.of(2025, 1, 3),
+            LocalDate.of(2025, 1, 4),
+            LocalDate.of(2025, 1, 5),
+            LocalDate.of(2025, 1, 6),
+            LocalDate.of(2025, 1, 7),
+            LocalDate.of(2025, 1, 8),
+            LocalDate.of(2025, 2, 23),
+            LocalDate.of(2025, 3, 8),
+            LocalDate.of(2025, 5, 1),
+            LocalDate.of(2025, 5, 5), // перенос
+            LocalDate.of(2025, 5, 6), // перенос
+            LocalDate.of(2025, 5, 9),
+            LocalDate.of(2025, 6, 12),
+            LocalDate.of(2025, 11, 4),
+            LocalDate.of(2025, 12, 1)  // перенос
     };
-
-
 
 
     public static String goodMorning() {
@@ -130,6 +105,14 @@ public class MessageAndDays {
         Collections.shuffle(goodMornings);
         return goodMornings.get(0);
     }
+
+    // Границы диапазонов (как в исходнике: > 01.10.2023 && < 01.10.2024 и т.д.)
+    public static final LocalDate RANGE_2024_START = LocalDate.of(2023, 9, 30);
+    public static final LocalDate RANGE_2024_END = LocalDate.of(2024, 10, 1);
+    public static final LocalDate RANGE_2025_START = LocalDate.of(2024, 9, 30);
+    public static final LocalDate RANGE_2025_END = LocalDate.of(2025, 10, 1);
+    public static final LocalDate RANGE_2026_START = LocalDate.of(2025, 9, 30);
+    public static final LocalDate RANGE_2026_END = LocalDate.of(2026, 10, 1);
 
 
     public static final Long[] chat_id = {434737035L, 846878161L, 406517766L, 803901509L, 1383650677L, 1052145142L, 5328965521L, 1267312358L};

@@ -6,7 +6,8 @@ import com.example.tikhoretsk_lawyers_bureau_1.database.repository.AppUserReposi
 import com.example.tikhoretsk_lawyers_bureau_1.pay.Calculation;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar24;
 import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar25;
-import com.example.tikhoretsk_lawyers_bureau_1.utils.MessageAndDays;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.Calendar26;
+import com.example.tikhoretsk_lawyers_bureau_1.utils.Stats;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,9 +15,12 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -28,13 +32,13 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
-public class LawyersBureauBot extends TelegramLongPollingCommandBot {
+public class BureauBot extends TelegramLongPollingCommandBot {
     private final String botUsername;
     private final Boards boards;
     private final Calculation calculation;
     private final AppUserRepository appUserRepository;
 
-    public LawyersBureauBot(
+    public BureauBot(
             @Value("${telegram.bot.token}") String botToken,
             @Value("${telegram.bot.username}") String botUsername,
             List<IBotCommand> commandList, Boards boards, Calculation calculation, AppUserRepository appUserRepository
@@ -60,7 +64,6 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
             handleCallbackQuery(update);
         }
     }
-
     private void handleTextMessage(Update update) {
         long chatId = update.getMessage().getChatId();
         appUserRepository.findById(chatId).orElseGet(() -> {
@@ -87,26 +90,27 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
         String callData = update.getCallbackQuery().getData();
         try {
             switch (callData) {
-                case "idea" -> sendMessage(chatId, MessageAndDays.help);
-                case "hist" -> sendMessage(chatId, MessageAndDays.history);
+                case "idea" -> sendMessage(chatId, Stats.help);
+                case "hist" -> sendMessage(chatId, Stats.history);
                 case "LR" -> executeBoardCommand(chatId, boards.defenders(chatId));
-                case "mo" -> sendLawyerContact(chatId, "9284317263");
-                case "чу" -> sendLawyerContact(chatId, "9184448513");
-                case "за" -> sendLawyerContact(chatId, "9284284415");
-                case "па" -> sendLawyerContact(chatId, "9184115196");
-                case "чм" -> sendLawyerContact(chatId, "9189414222");
-                case "pr" -> sendLawyerContact(chatId, "9184633388");
-                case "ка" -> sendLawyerContact(chatId, "9064341578");
-                case "де" -> sendLawyerContact(chatId, "9182910368");
-                case "кз" -> sendLawyerContact(chatId, "9181194119");
-                case "ше" -> sendLawyerContact(chatId, "9182140343");
-                case "да" -> sendLawyerContact(chatId, "9654664600");
-                case "жд" -> sendLawyerContact(chatId, "9184478853");
-                case "тю" -> sendLawyerContact(chatId, "9284272832");
+                case "mo" -> sendLawyerContact(chatId, "928 431 72 63");
+                case "чу" -> sendLawyerContact(chatId, "918 444 85 13");
+                case "за" -> sendLawyerContact(chatId, "928 428 44 15");
+                case "па" -> sendLawyerContact(chatId, "918 411 51 96");
+                case "чм" -> sendLawyerContact(chatId, "918 941 42 22");
+                case "pr" -> sendLawyerContact(chatId, "918 463 33 88");
+                case "ка" -> sendLawyerContact(chatId, "906 434 15 78");
+                case "де" -> sendLawyerContact(chatId, "918 291 03 68");
+                case "кз" -> sendLawyerContact(chatId, "918 119 41 19");
+                case "ше" -> sendLawyerContact(chatId, "918 214 03 43");
+                case "да" -> sendLawyerContact(chatId, "918 434 83 70");
+                case "жд" -> sendLawyerContact(chatId, "918 447 88 53");
+                case "тю" -> sendLawyerContact(chatId, "928 427 28 32");
                 case "ст" -> sendMessage(chatId, "Контр адмирал скрыл свои данные");
                 case "Размер оплаты труда" -> executeBoardCommand(chatId, boards.paragraphs(chatId));
                 case "a", "b", "v", "g" -> sendMessage2(chatId, callData);
-                case "но" -> executeBoardCommand(chatId, boards.quarter(chatId));
+                case "но" -> executeBoardCommand(chatId, boards.year(chatId));
+                case "но2" -> executeBoardCommand(chatId, boards.quarter(chatId));
                 case "зкч" -> sendMessageParagraphAndF(chatId, calculation.generateResult(chatId));
                 case "quarter_1_24" -> sendMessage(chatId, Calendar24.calendar1Q2024);
                 case "quarter_2_24" -> sendMessage(chatId, Calendar24.calendar2Q2024);
@@ -115,6 +119,10 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
                 case "quarter_1_25" -> sendMessage(chatId, Calendar25.calendar1Q2025);
                 case "quarter_2_25" -> sendMessage(chatId, Calendar25.calendar2Q2025);
                 case "quarter_3_25" -> sendMessage(chatId, Calendar25.calendar3Q2025);
+                case "quarter_4_25" -> sendMessage(chatId, Calendar25.calendar4Q2025);
+                case "quarter_1_26" -> sendMessage(chatId, Calendar26.calendar1Q2026);
+                case "quarter_2_26" -> sendMessage(chatId, Calendar26.calendar2Q2026);
+                case "quarter_3_26" -> sendMessage(chatId, Calendar26.calendar3Q2026);
             }
         } catch (TelegramApiException e) {
             log.error("Ошибка отправки сообщения", e);
@@ -124,13 +132,13 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
     private void sendLawyerContact(Long chatId, String phoneNumber) {
         sendMessage(chatId, "+7 " + phoneNumber);
     }
-
     private void sendMessage(Long chatId, String text) {
         try {
-            var sendMessage = new SendMessage(String.valueOf(chatId), text);
+
+            SendMessage sendMessage = new SendMessage(String.valueOf(chatId), text);
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            log.error("Ошибка отправки сообщения", e);
+            log.error("Ошибка отправки сообщения в чат с ID {}:   {}", chatId, e.getMessage(), e);
         }
     }
 
@@ -169,7 +177,7 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
                     LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
                     LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE").localizedBy(new Locale("ru"))));
             for (long id : appUserRepository.getChatIds()) {
-                sendMessage(id, MessageAndDays.goodMorning() + System.lineSeparator() + formattedText);
+                sendMessage(id, Stats.goodMorning() + System.lineSeparator() + formattedText);
             }
         }
     }
@@ -178,6 +186,18 @@ public class LawyersBureauBot extends TelegramLongPollingCommandBot {
             execute(message);
         } catch (TelegramApiException e) {
             log.error("Ошибка отправки сообщения", e);
+        }
+    }
+    private void sendPhoto(long chatId) {
+        SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setChatId(chatId);
+        InputFile photo = new InputFile(new File("image/8.jpg"));
+         sendPhoto .setPhoto(photo);
+        try {
+           execute(sendPhoto);
+
+        } catch (TelegramApiException e) {
+            log.error("Failed to send photo/sticker: {}", e.getMessage());
         }
     }
 
