@@ -127,17 +127,15 @@ public class Boards {
             return paragraphs(chat_id);
         }
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-        rowsInline.add(createButtonRow("⭐ "+"2024"+" ⭐ ", "2024"));
-        rowsInline.add(createButtonRow("⭐ "+"2025"+" ⭐ ", "2025"));
-        rowsInline.add(createButtonRow("⭐ "+"2026"+" ⭐ ", "2026"));
-
-
-        return messageGreat("ВЫБЕРЕТЕ КВАРТАЛ", rowsInline, chat_id);
+        rowsInline.add(createButtonRow("⭐  " + "2024" + "  ⭐ ", "2024"));
+        rowsInline.add(createButtonRow("⭐  " + "2025" + "  ⭐ ", "2025"));
+        rowsInline.add(createButtonRow("⭐  " + "2026" + "  ⭐ ", "2026"));
+        return messageGreat("ВЫБЕРЕТЕ ГОД", rowsInline, chat_id);
     }
 
 
 
-    public SendMessage quarter(long chat_id) {
+    public SendMessage quarter2024(long chat_id) {
         if (appUserRepository.findById(chat_id).orElseThrow().getParagraph() == null) {
             return paragraphs(chat_id);
         }
@@ -146,16 +144,36 @@ public class Boards {
         rowsInline.add(createButtonRow("АПРЕЛЬ МАЙ ИЮНЬ 24г.", "quarter_2_24"));
         rowsInline.add(createButtonRow("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 24г.", "quarter_3_24"));
         rowsInline.add(createButtonRow("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 24г.", "quarter_4_24"));
+
+        return messageGreat("ВЫБЕРЕТЕ КВАРТАЛ", rowsInline, chat_id);
+    }
+    public SendMessage quarter2025(long chat_id) {
+        if (appUserRepository.findById(chat_id).orElseThrow().getParagraph() == null) {
+            return paragraphs(chat_id);
+        }
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+
         rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 25г.", "quarter_1_25"));
         rowsInline.add(createButtonRow("АПРЕЛЬ МАЙ ИЮНЬ 25г.", "quarter_2_25"));
         rowsInline.add(createButtonRow("ИЮНЬ АВГУСТ СЕНТЯБРЬ 25г.", "quarter_3_25"));
         rowsInline.add(createButtonRow("ОКТЯБРЬ НОЯБРЬ ДЕКАБРЬ 25г.", "quarter_4_25"));
-        rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 26г.", "quarter_1_26"));
-        rowsInline.add(createButtonRow("АПРЕЛЬ МАЙ ИЮНЬ 26г.", "quarter_2_26"));
-        rowsInline.add(createButtonRow("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 26г.", "quarter_3_26"));
+
 
         return messageGreat("ВЫБЕРЕТЕ КВАРТАЛ", rowsInline, chat_id);
     }
+    public SendMessage quarter2026(long chat_id) {
+        if (appUserRepository.findById(chat_id).orElseThrow().getParagraph() == null) {
+            return paragraphs(chat_id);
+        }
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButtonRow("ЯНВАРЬ ФЕВРАЛЬ МАРТ 26г.", "quarter_1_26"));
+        rowsInline.add(createButtonRow("АПРЕЛЬ МАЙ ИЮНЬ 26г.", "quarter_2_26"));
+        rowsInline.add(createButtonRow("ИЮЛЬ АВГУСТ СЕНТЯБРЬ 26г.", "quarter_3_26"));
+        return messageGreat("ВЫБЕРЕТЕ КВАРТАЛ", rowsInline, chat_id);
+    }
+
+
+
 
     public InlineKeyboardButton buttonGreatRose(String text, String backData) {
         return createCustomButton("🌺 " + text + " 🌺", backData);

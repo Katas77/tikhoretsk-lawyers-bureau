@@ -110,7 +110,9 @@ public class BureauBot extends TelegramLongPollingCommandBot {
                 case "Размер оплаты труда" -> executeBoardCommand(chatId, boards.paragraphs(chatId));
                 case "a", "b", "v", "g" -> sendMessage2(chatId, callData);
                 case "но" -> executeBoardCommand(chatId, boards.year(chatId));
-                case "но2" -> executeBoardCommand(chatId, boards.quarter(chatId));
+                case "2024" -> executeBoardCommand(chatId, boards.quarter2024(chatId));
+                case "2025" -> executeBoardCommand(chatId, boards.quarter2025(chatId));
+                case "2026" -> executeBoardCommand(chatId, boards.quarter2026(chatId));
                 case "зкч" -> sendMessageParagraphAndF(chatId, calculation.generateResult(chatId));
                 case "quarter_1_24" -> sendMessage(chatId, Calendar24.calendar1Q2024);
                 case "quarter_2_24" -> sendMessage(chatId, Calendar24.calendar2Q2024);
@@ -145,7 +147,7 @@ public class BureauBot extends TelegramLongPollingCommandBot {
     private void sendMessage2(Long chatId, String paragraph) {
         appUserRepository.resetPaymentDays(chatId);
         appUserRepository.updateParagraph(chatId, paragraph);
-        executeBoardCommand(chatId, boards.quarter(chatId));
+        executeBoardCommand(chatId, boards.year(chatId));
     }
 
     public void parseDate(Message message) {
