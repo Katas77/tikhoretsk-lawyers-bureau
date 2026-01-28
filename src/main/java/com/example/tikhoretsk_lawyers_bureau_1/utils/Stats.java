@@ -25,44 +25,45 @@ public class Stats {
     public final static int[] day2026 = {2667, 2395, 2128, 1861};
     public final static int[] dayOff2026 = {4156, 3611, 3078, 2544};
     public final static LocalDate[] holidays = {
-            // 2024
-            LocalDate.of(2024, 1, 1),
-            LocalDate.of(2024, 1, 2),
-            LocalDate.of(2024, 1, 3),
-            LocalDate.of(2024, 1, 4),
-            LocalDate.of(2024, 1, 5),
-            LocalDate.of(2024, 1, 6),
-            LocalDate.of(2024, 1, 7),
-            LocalDate.of(2024, 1, 8),
+            // 2024 год (Постановление Правительства РФ от 30.08.2023 № 1447)
+            LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 2), LocalDate.of(2024, 1, 3),
+            LocalDate.of(2024, 1, 4), LocalDate.of(2024, 1, 5), LocalDate.of(2024, 1, 6),
+            LocalDate.of(2024, 1, 7), LocalDate.of(2024, 1, 8),
             LocalDate.of(2024, 2, 23),
             LocalDate.of(2024, 3, 8),
-            LocalDate.of(2024, 4, 29), // перенос
+            LocalDate.of(2024, 4, 29), LocalDate.of(2024, 4, 30), // Переносы с 6 и 7 января
             LocalDate.of(2024, 5, 1),
-            LocalDate.of(2024, 5, 9),
+            LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10), // 10 мая — перенос с 24 февраля
             LocalDate.of(2024, 6, 12),
             LocalDate.of(2024, 11, 4),
-            LocalDate.of(2024, 12, 30), // перенос
+            LocalDate.of(2024, 12, 30), LocalDate.of(2024, 12, 31), // Переносы с 2 и 3 ноября
 
-            // 2025
-            LocalDate.of(2025, 1, 1),
-            LocalDate.of(2025, 1, 2),
-            LocalDate.of(2025, 1, 3),
-            LocalDate.of(2025, 1, 4),
-            LocalDate.of(2025, 1, 5),
-            LocalDate.of(2025, 1, 6),
-            LocalDate.of(2025, 1, 7),
-            LocalDate.of(2025, 1, 8),
-            LocalDate.of(2025, 2, 23),
-            LocalDate.of(2025, 3, 8),
-            LocalDate.of(2025, 5, 1),
-            LocalDate.of(2025, 5, 5), // перенос
-            LocalDate.of(2025, 5, 6), // перенос
+            // 2025 год (Постановление Правительства РФ от 16.08.2024 № 1167)
+            LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 2), LocalDate.of(2025, 1, 3),
+            LocalDate.of(2025, 1, 4), LocalDate.of(2025, 1, 5), LocalDate.of(2025, 1, 6),
+            LocalDate.of(2025, 1, 7), LocalDate.of(2025, 1, 8),
+            LocalDate.of(2025, 2, 24), // Перенос с 23 февраля (вс)
+            LocalDate.of(2025, 3, 10), // Перенос с 8 марта (сб)
+            LocalDate.of(2025, 5, 1), LocalDate.of(2025, 5, 2), // 2 мая — перенос с 4 января
+            LocalDate.of(2025, 5, 5), LocalDate.of(2025, 5, 6), // Переносы с 5 января и доп. перенос
             LocalDate.of(2025, 5, 9),
-            LocalDate.of(2025, 6, 12),
-            LocalDate.of(2025, 11, 4),
-            LocalDate.of(2025, 12, 1)  // перенос
-    };
+            LocalDate.of(2025, 6, 12), LocalDate.of(2025, 6, 13), // 13 июня — перенос с 8 марта
+            LocalDate.of(2025, 11, 3), LocalDate.of(2025, 11, 4), // 3 ноября — перенос с 1 ноября
+            LocalDate.of(2025, 12, 31), // Перенос с 6 января 2026
 
+            // 2026 год (Постановление Правительства РФ от 30.08.2025 № 1450)
+            LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 2), LocalDate.of(2026, 1, 3),
+            LocalDate.of(2026, 1, 4), LocalDate.of(2026, 1, 5), LocalDate.of(2026, 1, 6),
+            LocalDate.of(2026, 1, 7), LocalDate.of(2026, 1, 8),
+            LocalDate.of(2026, 2, 23),
+            LocalDate.of(2026, 3, 9), // Перенос с 8 марта (вс)
+            LocalDate.of(2026, 5, 1),
+            LocalDate.of(2026, 5, 4), LocalDate.of(2026, 5, 5), // Переносы с январских выходных
+            LocalDate.of(2026, 5, 9), LocalDate.of(2026, 5, 11), // 11 мая — перенос с 9 мая (сб)
+            LocalDate.of(2026, 6, 12),
+            LocalDate.of(2026, 11, 4),
+            LocalDate.of(2026, 12, 31) // Перенос с 3 января 2027
+    };
 
     public static String goodMorning() {
         ArrayList<String> goodMornings = new ArrayList<>();
